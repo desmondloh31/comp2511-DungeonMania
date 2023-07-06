@@ -1,10 +1,17 @@
 package dungeonmania.entities.enemies;
 
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.collectables.potions.InvincibilityPotion;
+import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -44,6 +51,31 @@ public abstract class Enemy extends Entity implements Battleable {
     @Override
     public void onMovedAway(GameMap map, Entity entity) {
         return;
+    }
+
+    // self implemented helper methods:
+    protected Position moveRandomly(Game game) {
+        Position incrementedPosition;
+        Random random = new Random();
+        List<Position> position = getPosition().getCardinallyAdjacentPositions();
+        GameMap map = game.getMap();
+        position = position.stream().filter(pos -> map.canMoveTo(this, pos)).collect(Collectors.toList());
+        if (position.size() == 0) {
+            incrementedPosition = getPosition();
+            map.moveTo(this, incrementedPosition);
+        } else {
+            incrementedPosition = position.get(random.nextInt(position.size()));
+            map.moveTo(this, incrementedPosition);
+        }
+        return incrementedPosition;
+    }
+
+    protected boolean playerHasInvisibilityPotion(Game game) {
+        return game.getMap().getPlayer().getEffectivePotion() instanceof InvisibilityPotion;
+    }
+
+    protected boolean playerHasInvincibilityPotion(Game game) {
+        return game.getMap().getPlayer().getEffectivePotion() instanceof InvincibilityPotion;
     }
 
     public abstract void move(Game game);

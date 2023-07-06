@@ -1,17 +1,11 @@
 package dungeonmania.entities.enemies;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
-import dungeonmania.entities.collectables.potions.InvincibilityPotion;
-import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -79,39 +73,29 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
-        Position nextPos;
+        Position incrementedPosition;
         GameMap map = game.getMap();
         Player player = game.getPlayer();
-        if (allied) {
-            nextPos = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
-                    : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
-            if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), nextPos))
-                isAdjacentToPlayer = true;
-        } else if (map.getPlayer().getEffectivePotion() instanceof InvisibilityPotion) {
-            // Move random
-            Random randGen = new Random();
-            List<Position> pos = getPosition().getCardinallyAdjacentPositions();
-            pos = pos.stream().filter(p -> map.canMoveTo(this, p)).collect(Collectors.toList());
-            if (pos.size() == 0) {
-                nextPos = getPosition();
-                map.moveTo(this, nextPos);
-            } else {
-                nextPos = pos.get(randGen.nextInt(pos.size()));
-                map.moveTo(this, nextPos);
-            }
-        } else if (map.getPlayer().getEffectivePotion() instanceof InvincibilityPotion) {
-            Position plrDiff = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
 
-            Position moveX = (plrDiff.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
+        if (allied) {
+            incrementedPosition = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
+                    : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+            if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), incrementedPosition))
+                isAdjacentToPlayer = true;
+        } else if (playerHasInvisibilityPotion(game)) {
+            incrementedPosition = moveRandomly(game);
+        } else if (playerHasInvincibilityPotion(game)) {
+            Position playerDifference = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
+            Position moveX = (playerDifference.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
                     : Position.translateBy(getPosition(), Direction.LEFT);
-            Position moveY = (plrDiff.getY() >= 0) ? Position.translateBy(getPosition(), Direction.UP)
+            Position moveY = (playerDifference.getY() >= 0) ? Position.translateBy(getPosition(), Direction.UP)
                     : Position.translateBy(getPosition(), Direction.DOWN);
             Position offset = getPosition();
-            if (plrDiff.getY() == 0 && map.canMoveTo(this, moveX))
+            if (playerDifference.getY() == 0 && map.canMoveTo(this, moveX))
                 offset = moveX;
-            else if (plrDiff.getX() == 0 && map.canMoveTo(this, moveY))
+            else if (playerDifference.getX() == 0 && map.canMoveTo(this, moveY))
                 offset = moveY;
-            else if (Math.abs(plrDiff.getX()) >= Math.abs(plrDiff.getY())) {
+            else if (Math.abs(playerDifference.getX()) >= Math.abs(playerDifference.getY())) {
                 if (map.canMoveTo(this, moveX))
                     offset = moveX;
                 else if (map.canMoveTo(this, moveY))
@@ -126,12 +110,13 @@ public class Mercenary extends Enemy implements Interactable {
                 else
                     offset = getPosition();
             }
-            nextPos = offset;
+            incrementedPosition = offset;
         } else {
             // Follow hostile
-            nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+            incrementedPosition = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
         }
-        map.moveTo(this, nextPos);
+
+        map.moveTo(this, incrementedPosition);
     }
 
     @Override
