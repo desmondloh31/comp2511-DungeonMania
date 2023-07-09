@@ -4,7 +4,7 @@ import dungeonmania.map.GameMap;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.util.Position;
 
-public class Wall extends Entity {
+public class Wall extends Entity implements Overlappable, MoveAwayable, Destructible {
     public Wall(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
     }
