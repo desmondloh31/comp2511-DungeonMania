@@ -2,20 +2,22 @@ package dungeonmania.entities.enemies;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
+import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.MoveAwayable;
+import dungeonmania.entities.Overlappable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Enemy extends Entity implements Battleable {
+public abstract class Enemy extends Entity implements Battleable, Overlappable, Destructible, MoveAwayable {
     private BattleStatistics battleStatistics;
 
     public Enemy(Position position, double health, double attack) {

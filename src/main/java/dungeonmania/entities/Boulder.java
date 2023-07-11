@@ -5,16 +5,17 @@ import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Boulder extends Entity {
-
+public class Boulder extends Entity implements Overlappable, MoveAwayable, Destructible {
     public Boulder(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
     }
 
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {
-        if (entity instanceof Spider) return false;
-        if (entity instanceof Player && canPush(map, entity.getFacing())) return true;
+        if (entity instanceof Spider)
+            return false;
+        if (entity instanceof Player && canPush(map, entity.getFacing()))
+            return true;
         return false;
     }
 
@@ -28,7 +29,8 @@ public class Boulder extends Entity {
     private boolean canPush(GameMap map, Direction direction) {
         Position newPosition = Position.translateBy(this.getPosition(), direction);
         for (Entity e : map.getEntities(newPosition)) {
-            if (!e.canMoveOnto(map, this)) return false;
+            if (!e.canMoveOnto(map, this))
+                return false;
         }
         return true;
     }
