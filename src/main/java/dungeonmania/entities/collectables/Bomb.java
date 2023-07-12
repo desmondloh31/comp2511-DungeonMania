@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import dungeonmania.entities.Destructible;
+// import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.MoveAwayable;
-import dungeonmania.entities.Overlappable;
+// import dungeonmania.entities.MoveAwayable;
+// import dungeonmania.entities.Overlappable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
-import dungeonmania.entities.inventory.InventoryItem;
+// import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 
-public class Bomb extends Entity implements InventoryItem, Overlappable, MoveAwayable, Destructible {
+public class Bomb extends Collectable {
     public enum State {
         SPAWNED, INVENTORY, PLACED
     }
@@ -40,10 +40,10 @@ public class Bomb extends Entity implements InventoryItem, Overlappable, MoveAwa
         explode(map);
     }
 
-    @Override
-    public boolean canMoveOnto(GameMap map, Entity entity) {
-        return true;
-    }
+    // @Override
+    // public boolean canMoveOnto(GameMap map, Entity entity) {
+    //     return true;
+    // }
 
     @Override
     public void onOverlap(GameMap map, Entity entity) {
@@ -58,15 +58,15 @@ public class Bomb extends Entity implements InventoryItem, Overlappable, MoveAwa
         this.state = State.INVENTORY;
     }
 
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
+    // @Override
+    // public void onMovedAway(GameMap map, Entity entity) {
+    //     return;
+    // }
 
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
+    // @Override
+    // public void onDestroy(GameMap gameMap) {
+    //     return;
+    // }
 
     public void onPutDown(GameMap map, Position p) {
         translate(Position.calculatePositionBetween(getPosition(), p));
