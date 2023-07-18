@@ -1,6 +1,5 @@
 package dungeonmania.entities.collectables.potions;
 
-import dungeonmania.battles.BattleStatistics;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Potion {

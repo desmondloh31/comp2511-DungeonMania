@@ -18,7 +18,8 @@ public class ZombieToastSpawner extends Entity implements Interactable, Overlapp
     }
 
     public void spawn(Game game) {
-        game.getEntityFactory().spawnZombie(game, this);
+        // game.getEntityFactory().spawnZombie(game, this);
+        game.gameSpawnZombie(game, this);
     }
 
     @Override
@@ -29,7 +30,8 @@ public class ZombieToastSpawner extends Entity implements Interactable, Overlapp
 
     @Override
     public void interact(Player player, Game game) {
-        player.getInventory().getWeapon().use(game);
+        // player.getInventory().getWeapon().use(game);
+        player.playerUse(game);
     }
 
     @Override

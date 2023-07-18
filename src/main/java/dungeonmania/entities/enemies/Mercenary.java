@@ -85,7 +85,7 @@ public class Mercenary extends Enemy implements Interactable {
         } else if (playerHasInvisibilityPotion(game)) {
             incrementedPosition = moveRandomly(game);
         } else if (playerHasInvincibilityPotion(game)) {
-            Position playerDifference = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
+            Position playerDifference = Position.calculatePositionBetween(map.getPlayerPosition(), getPosition());
             Position moveX = (playerDifference.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
                     : Position.translateBy(getPosition(), Direction.LEFT);
             Position moveY = (playerDifference.getY() >= 0) ? Position.translateBy(getPosition(), Direction.UP)

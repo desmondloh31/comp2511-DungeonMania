@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.collectables.Bomb;
@@ -76,7 +77,8 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
                 if (((Mercenary) entity).isAllied())
                     return;
             }
-            map.getGame().battle(this, (Enemy) entity);
+            // map.getGame().battle(this, (Enemy) entity);
+            map.gameBattle(this, (Enemy) entity);
         }
     }
 
@@ -99,8 +101,20 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
         return inventory;
     }
 
+    public void playerUse(Game game) {
+        inventory.playerUse(game);
+    }
+
     public List<BattleItem> getPlayerEntities() {
         return inventory.getEntities(BattleItem.class);
+    }
+
+    public double getPlayerAttack() {
+        return battleStatistics.getAttack();
+    }
+
+    public void setPlayerAttack(double attack) {
+        this.battleStatistics.setAttack(attack);
     }
 
     public Potion getEffectivePotion() {

@@ -13,6 +13,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.Portal;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
+import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.util.Direction;
@@ -78,7 +79,8 @@ public class GameMap {
         zts.forEach(e -> {
             game.register(() -> e.spawn(game), Game.AI_MOVEMENT, e.getId());
         });
-        game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
+        // game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
+        game.register(() -> game.gameSpawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
     }
 
     public void moveTo(Entity entity, Position position) {
@@ -248,12 +250,24 @@ public class GameMap {
         return player;
     }
 
+    public Potion getGameEffectivePotion() {
+        return player.getEffectivePotion();
+    }
+
+    public Position getPlayerPosition() {
+        return player.getPosition();
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
     }
 
     public Game getGame() {
         return game;
+    }
+
+    public void gameBattle(Player player, Enemy enemy) {
+        game.battle(player, enemy);
     }
 
     public void setGame(Game game) {
