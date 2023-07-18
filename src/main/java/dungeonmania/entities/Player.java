@@ -99,6 +99,10 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
         return inventory;
     }
 
+    public List<BattleItem> getPlayerEntities() {
+        return inventory.getEntities(BattleItem.class);
+    }
+
     public Potion getEffectivePotion() {
         return inEffective;
     }
@@ -154,6 +158,14 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
     @Override
     public BattleStatistics getBattleStatistics() {
         return battleStatistics;
+    }
+
+    public void setPlayerHealth(double health) {
+        this.battleStatistics.setHealth(health);
+    }
+
+    public double getPlayerHealth() {
+        return battleStatistics.getHealth();
     }
 
     public <T extends InventoryItem> int countEntityOfType(Class<T> itemType) {
