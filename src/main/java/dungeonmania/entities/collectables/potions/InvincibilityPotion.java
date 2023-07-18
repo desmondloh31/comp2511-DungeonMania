@@ -9,9 +9,4 @@ public class InvincibilityPotion extends Potion {
     public InvincibilityPotion(Position position, int duration) {
         super(position, duration, new InvincibleState());
     }
-
-    @Override
-    public BattleStatistics applyBuff(BattleStatistics origin) {
-        return BattleStatistics.applyBuff(origin, new BattleStatistics(0, 0, 0, 1, 1, true, true));
-    }
 }
