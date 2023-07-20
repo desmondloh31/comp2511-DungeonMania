@@ -12,7 +12,8 @@ public class ExitGoal implements GoalStrategy {
     public boolean achieved(Game game) {
         Player character = game.getPlayer();
         Position pos = character.getPosition();
-        List<Exit> es = game.getMap().getEntities(Exit.class);
+        // List<Exit> es = game.getMap().getEntities(Exit.class);
+        List<Exit> es = game.getGameEntities(Exit.class);
         if (es == null || es.size() == 0)
             return false;
         return es.stream().map(Entity::getPosition).anyMatch(pos::equals);

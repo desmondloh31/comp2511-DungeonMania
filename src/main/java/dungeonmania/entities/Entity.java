@@ -4,6 +4,7 @@ import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import java.util.List;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -46,7 +47,6 @@ public abstract class Entity {
         this.position = Position.translateBy(this.position, offset);
     }
 
-
     public abstract void onOverlap(GameMap map, Entity entity);
 
     public abstract void onMovedAway(GameMap map, Entity entity);
@@ -55,6 +55,14 @@ public abstract class Entity {
 
     public Position getPosition() {
         return position;
+    }
+
+    public List<Position> getEntityCardinallyAdjacentPositions() {
+        return position.getCardinallyAdjacentPositions();
+    }
+
+    public List<Position> getEntityAdjacentPositions() {
+        return position.getAdjacentPositions();
     }
 
     public Position getPreviousPosition() {

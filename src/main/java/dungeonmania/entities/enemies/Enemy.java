@@ -36,6 +36,14 @@ public abstract class Enemy extends Entity implements Battleable, Overlappable, 
         return battleStatistics;
     }
 
+    public void setEnemyHealth(double health) {
+        this.battleStatistics.setHealth(health);
+    }
+
+    public double getEnemyHealth() {
+        return battleStatistics.getHealth();
+    }
+
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player) {
@@ -59,7 +67,8 @@ public abstract class Enemy extends Entity implements Battleable, Overlappable, 
     protected Position moveRandomly(Game game) {
         Position incrementedPosition;
         Random random = new Random();
-        List<Position> position = getPosition().getCardinallyAdjacentPositions();
+        // List<Position> position = getPosition().getCardinallyAdjacentPositions();
+        List<Position> position = getEntityCardinallyAdjacentPositions();
         GameMap map = game.getMap();
         position = position.stream().filter(pos -> map.canMoveTo(this, pos)).collect(Collectors.toList());
         if (position.size() == 0) {
@@ -73,11 +82,12 @@ public abstract class Enemy extends Entity implements Battleable, Overlappable, 
     }
 
     protected boolean playerHasInvisibilityPotion(Game game) {
-        return game.getMap().getPlayer().getEffectivePotion() instanceof InvisibilityPotion;
+        // return game.getMap().getPlayer().getEffectivePotion() instanceof InvisibilityPotion;
+        return game.getGameEffectivePotion() instanceof InvisibilityPotion;
     }
 
     protected boolean playerHasInvincibilityPotion(Game game) {
-        return game.getMap().getPlayer().getEffectivePotion() instanceof InvincibilityPotion;
+        return game.getGameEffectivePotion() instanceof InvincibilityPotion;
     }
 
     public abstract void move(Game game);

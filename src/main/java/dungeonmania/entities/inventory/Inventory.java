@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dungeonmania.Game;
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
@@ -114,6 +115,11 @@ public class Inventory {
         if (weapon == null)
             return getFirst(Bow.class);
         return weapon;
+    }
+
+    public void playerUse(Game game) {
+        BattleItem weapon = getFirst(Sword.class);
+        weapon.use(game);
     }
 
 }

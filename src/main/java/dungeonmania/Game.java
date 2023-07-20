@@ -12,10 +12,13 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class Game {
     private String id;
@@ -180,12 +183,44 @@ public class Game {
         return map;
     }
 
+    public List<Entity> getGameEntities(Position position) {
+        return map.getEntities(position);
+    }
+
+    public <T extends Entity> List<T> getGameEntities(Class<T> type) {
+        return map.getEntities(type);
+    }
+
+    public Potion getGameEffectivePotion() {
+        return map.getGameEffectivePotion();
+    }
+
+    public Position getPlayerPosition() {
+        return map.getPlayerPosition();
+    }
+
+    public boolean canMapMoveTo(Entity entity, Position position) {
+        return map.canMoveTo(entity, position);
+    }
+
+    public List<Mercenary> getGameMercenaries() {
+        return map.getEntities(Mercenary.class);
+    }
+
     public void setMap(GameMap map) {
         this.map = map;
     }
 
     public EntityFactory getEntityFactory() {
         return entityFactory;
+    }
+
+    public void gameSpawnZombie(Game game, ZombieToastSpawner spawner) {
+        entityFactory.spawnZombie(game, spawner);
+    }
+
+    public void gameSpawnSpider(Game game) {
+        entityFactory.spawnSpider(game);
     }
 
     public void setEntityFactory(EntityFactory factory) {

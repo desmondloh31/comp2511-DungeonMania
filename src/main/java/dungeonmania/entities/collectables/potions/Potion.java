@@ -8,10 +8,12 @@ import dungeonmania.util.Position;
 
 public abstract class Potion extends Collectable implements BattleItem {
     private int duration;
+    private EffectState state;
 
-    public Potion(Position position, int duration) {
+    public Potion(Position position, int duration, EffectState state) {
         super(position);
         this.duration = duration;
+        this.state = state;
     }
 
     @Override

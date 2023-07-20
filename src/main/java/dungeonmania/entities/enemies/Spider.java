@@ -46,7 +46,8 @@ public class Spider extends Enemy {
     @Override
     public void move(Game game) {
         Position nextPos = movementTrajectory.get(nextPositionElement);
-        List<Entity> entities = game.getMap().getEntities(nextPos);
+        // List<Entity> entities = game.getMap().getEntities(nextPos);
+        List<Entity> entities = game.getGameEntities(nextPos);
         if (entities != null && entities.size() > 0 && entities.stream().anyMatch(e -> e instanceof Boulder)) {
             forward = !forward;
             updateNextPosition();

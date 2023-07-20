@@ -55,7 +55,8 @@ public class Assassin extends Mercenary {
             // Follow hostile, with more damage due to being an Assassin
             incrementedPosition = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
             if (Position.isAdjacent(player.getPosition(), incrementedPosition)) {
-                player.getBattleStatistics().setAttack(player.getBattleStatistics().getAttack() - ASSASSIN_ATTACK);
+                // player.getBattleStatistics().setAttack(player.getBattleStatistics().getAttack() - ASSASSIN_ATTACK);
+                player.setPlayerAttack(player.getPlayerAttack() - ASSASSIN_ATTACK);
             }
         }
 
