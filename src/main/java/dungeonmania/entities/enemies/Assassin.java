@@ -20,9 +20,10 @@ public class Assassin extends Mercenary {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private boolean isAdjacentToPlayer = false;
 
-    public Assassin(Position position, double health, double attack, int bribeAmount, int bribeRadius,
-            double allyAttack, double allyDefence) {
-        super(position, health, attack, bribeAmount, bribeRadius, allyAttack, allyDefence);
+    public Assassin(Position position) {
+        super(position, ASSASSIN_HEALTH, ASSASSIN_ATTACK, DEFAULT_BRIBE_AMOUNT, DEFAULT_BRIBE_RADIUS, ALLY_ATTACK,
+                ALLY_DEFENCE);
+        this.bribeAmount = DEFAULT_BRIBE_AMOUNT;
     }
 
     @Override
@@ -57,6 +58,7 @@ public class Assassin extends Mercenary {
             if (Position.isAdjacent(player.getPosition(), incrementedPosition)) {
                 // player.getBattleStatistics().setAttack(player.getBattleStatistics().getAttack() - ASSASSIN_ATTACK);
                 player.setPlayerAttack(player.getPlayerAttack() - ASSASSIN_ATTACK);
+                player.setPlayerHealth(player.getPlayerHealth() - ASSASSIN_ATTACK);
             }
         }
 
