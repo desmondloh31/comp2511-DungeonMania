@@ -23,6 +23,7 @@ public class GameMap {
     private Game game;
     private Map<Position, GraphNode> nodes = new HashMap<>();
     private Player player;
+    private static final int MAX_DISTANCE = 200;
 
     /**
      * Initialise the game map
@@ -148,7 +149,7 @@ public class GameMap {
 
         while (!q.isEmpty()) {
             Position curr = q.poll();
-            if (curr.equals(dest) || dist.get(curr) > 200)
+            if (curr.equals(dest) || dist.get(curr) > MAX_DISTANCE)
                 break;
             // check portal
             if (nodes.containsKey(curr) && nodes.get(curr).getEntities().stream().anyMatch(Portal.class::isInstance)) {

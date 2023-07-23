@@ -87,6 +87,7 @@ public class Mercenary extends Enemy implements Interactable {
             // Follow hostile
             incrementedPosition = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
         }
+
         map.moveTo(this, incrementedPosition);
     }
 

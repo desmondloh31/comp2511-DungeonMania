@@ -77,7 +77,6 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
                 if (((Mercenary) entity).isAllied())
                     return;
             }
-            // map.getGame().battle(this, (Enemy) entity);
             map.gameBattle(this, (Enemy) entity);
         }
     }
