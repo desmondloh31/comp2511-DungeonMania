@@ -78,44 +78,15 @@ public class Mercenary extends Enemy implements Interactable {
         Player player = game.getPlayer();
 
         if (allied) {
-            incrementedPosition = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
-                    : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
-            if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), incrementedPosition))
-                isAdjacentToPlayer = true;
+            incrementedPosition = moveAlly(map, player);
         } else if (playerHasInvisibilityPotion(game)) {
             incrementedPosition = moveRandomly(game);
         } else if (playerHasInvincibilityPotion(game)) {
-            Position playerDifference = Position.calculatePositionBetween(map.getPlayerPosition(), getPosition());
-            Position moveX = (playerDifference.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
-                    : Position.translateBy(getPosition(), Direction.LEFT);
-            Position moveY = (playerDifference.getY() >= 0) ? Position.translateBy(getPosition(), Direction.UP)
-                    : Position.translateBy(getPosition(), Direction.DOWN);
-            Position offset = getPosition();
-            if (playerDifference.getY() == 0 && map.canMoveTo(this, moveX))
-                offset = moveX;
-            else if (playerDifference.getX() == 0 && map.canMoveTo(this, moveY))
-                offset = moveY;
-            else if (Math.abs(playerDifference.getX()) >= Math.abs(playerDifference.getY())) {
-                if (map.canMoveTo(this, moveX))
-                    offset = moveX;
-                else if (map.canMoveTo(this, moveY))
-                    offset = moveY;
-                else
-                    offset = getPosition();
-            } else {
-                if (map.canMoveTo(this, moveY))
-                    offset = moveY;
-                else if (map.canMoveTo(this, moveX))
-                    offset = moveX;
-                else
-                    offset = getPosition();
-            }
-            incrementedPosition = offset;
+            incrementedPosition = moveInvisibile(map, player);
         } else {
             // Follow hostile
             incrementedPosition = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
         }
-
         map.moveTo(this, incrementedPosition);
     }
 
@@ -129,5 +100,49 @@ public class Mercenary extends Enemy implements Interactable {
         if (!allied)
             return super.getBattleStatistics();
         return new BattleStatistics(0, allyAttack, allyDefence, 1, 1);
+    }
+
+    private Position moveAlly(GameMap map, Player player) {
+        Position incrementedPosition;
+        incrementedPosition = isAdjacentToPlayer ? player.getPreviousDistinctPosition()
+                : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+        if (!isAdjacentToPlayer && Position.isAdjacent(player.getPosition(), incrementedPosition))
+            setIsAdjacentToPlayer(true);
+        return incrementedPosition;
+    }
+
+    private Position moveInvisibile(GameMap map, Player player) {
+        Position incrementedPosition;
+        Position playerDifference = Position.calculatePositionBetween(map.getPlayerPosition(), getPosition());
+        Position moveX = (playerDifference.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
+                : Position.translateBy(getPosition(), Direction.LEFT);
+        Position moveY = (playerDifference.getY() >= 0) ? Position.translateBy(getPosition(), Direction.UP)
+                : Position.translateBy(getPosition(), Direction.DOWN);
+        Position offset = getPosition();
+        if (playerDifference.getY() == 0 && map.canMoveTo(this, moveX))
+            offset = moveX;
+        else if (playerDifference.getX() == 0 && map.canMoveTo(this, moveY))
+            offset = moveY;
+        else if (Math.abs(playerDifference.getX()) >= Math.abs(playerDifference.getY())) {
+            if (map.canMoveTo(this, moveX))
+                offset = moveX;
+            else if (map.canMoveTo(this, moveY))
+                offset = moveY;
+            else
+                offset = getPosition();
+        } else {
+            if (map.canMoveTo(this, moveY))
+                offset = moveY;
+            else if (map.canMoveTo(this, moveX))
+                offset = moveX;
+            else
+                offset = getPosition();
+        }
+        incrementedPosition = offset;
+        return incrementedPosition;
+    }
+
+    public void setIsAdjacentToPlayer(boolean value) {
+        this.isAdjacentToPlayer = value;
     }
 }
