@@ -30,5 +30,4 @@ public class Shield extends Buildable {
     public int getDurability() {
         return durability;
     }
-
 }

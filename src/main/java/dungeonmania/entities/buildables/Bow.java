@@ -5,6 +5,10 @@ import dungeonmania.battles.BattleStatistics;
 
 public class Bow extends Buildable {
     private int durability;
+    private static final int BOWWOOD = 1;
+    private static final int BOWARROW = 3;
+    private static final int BOWTREASURE = 0;
+    private static final int BOWKEYS = 0;
 
     public Bow(int durability) {
         super(null);

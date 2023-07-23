@@ -11,8 +11,21 @@ import dungeonmania.util.Position;
 
 public abstract class Buildable extends Entity
         implements InventoryItem, BattleItem, Overlappable, MoveAwayable, Destructible {
+    private int wood;
+    private int arrows;
+    private int treasure;
+    private int keys;
+
     public Buildable(Position position) {
         super(position);
+    }
+
+    public Buildable(Position position, int wood, int arrows, int treasure, int keys) {
+        super(position);
+        this.wood = wood;
+        this.arrows = arrows;
+        this.treasure = treasure;
+        this.keys = keys;
     }
 
     @Override
@@ -28,5 +41,41 @@ public abstract class Buildable extends Entity
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public int getWood() {
+        return wood;
+    }
+
+    public int getArrows() {
+        return arrows;
+    }
+
+    public int getTreasure() {
+        return treasure;
+    }
+
+    public int getKeys() {
+        return keys;
+    }
+
+    public String setBuild() {
+        return "";
+    }
+
+    public int woodRequirements() {
+        return -1;
+    }
+
+    public int arrowRequirements() {
+        return -1;
+    };
+
+    public int treasureRequirements() {
+        return -1;
+    }
+
+    public int keyRequirements() {
+        return -1;
     }
 }
