@@ -20,10 +20,9 @@ public class Assassin extends Mercenary {
     private int bribeAmount = Mercenary.DEFAULT_BRIBE_AMOUNT;
     private boolean isAdjacentToPlayer = false;
 
-    public Assassin(Position position) {
-        super(position, ASSASSIN_HEALTH, ASSASSIN_ATTACK, DEFAULT_BRIBE_AMOUNT, DEFAULT_BRIBE_RADIUS, ALLY_ATTACK,
-                ALLY_DEFENCE);
-        this.bribeAmount = DEFAULT_BRIBE_AMOUNT;
+    public Assassin(Position position, double health, double attack, int bribeAmount, int bribeRadius,
+            double allyAttack, double allyDefence) {
+        super(position, health, attack, bribeAmount, bribeRadius, allyAttack, allyDefence);
     }
 
     @Override
