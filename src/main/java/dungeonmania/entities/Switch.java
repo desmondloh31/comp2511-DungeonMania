@@ -58,4 +58,16 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    // switch is a defined conductor
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        if (activated == true) {
+            setTickActivated(map.getCurrentTick(), map);
+        }
+        return activated;
+    }
+
+    public boolean isConductor() {
+        return true;
+    }
 }

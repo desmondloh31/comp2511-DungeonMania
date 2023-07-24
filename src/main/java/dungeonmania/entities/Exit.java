@@ -1,5 +1,7 @@
 package dungeonmania.entities;
 
+import java.util.List;
+
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -26,5 +28,13 @@ public class Exit extends Entity {
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 }

@@ -2,6 +2,8 @@ package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
 
+import java.util.List;
+
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;
@@ -62,5 +64,13 @@ public class Door extends Entity implements Overlappable, MoveAwayable, Destruct
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 }

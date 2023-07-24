@@ -2,6 +2,7 @@ package dungeonmania.entities.enemies;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -59,4 +60,5 @@ public class Hydra extends Enemy {
     public int getHeadCount() {
         return this.headCount;
     }
+
 }

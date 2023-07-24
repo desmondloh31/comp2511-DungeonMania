@@ -146,4 +146,5 @@ public class Mercenary extends Enemy implements Interactable {
     public void setIsAdjacentToPlayer(boolean value) {
         this.isAdjacentToPlayer = value;
     }
+
 }

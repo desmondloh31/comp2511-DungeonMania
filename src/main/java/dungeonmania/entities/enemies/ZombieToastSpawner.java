@@ -1,5 +1,7 @@
 package dungeonmania.entities.enemies;
 
+import java.util.List;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
@@ -45,5 +47,13 @@ public class ZombieToastSpawner extends Entity implements Interactable, Overlapp
     @Override
     public void onMovedAway(GameMap map, Entity entity) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 }

@@ -78,4 +78,12 @@ public class Portal extends Entity implements Overlappable, MoveAwayable, Destru
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
 }

@@ -267,6 +267,10 @@ public class GameMap {
         return game;
     }
 
+    public int getCurrentTick() {
+        return game.getTick();
+    }
+
     public void gameBattle(Player player, Enemy enemy) {
         game.battle(player, enemy);
     }

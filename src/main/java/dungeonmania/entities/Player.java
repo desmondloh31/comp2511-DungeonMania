@@ -203,4 +203,12 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
 }

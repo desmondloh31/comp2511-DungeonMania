@@ -1,5 +1,7 @@
 package dungeonmania.entities.buildables;
 
+import java.util.List;
+
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
@@ -41,6 +43,14 @@ public abstract class Buildable extends Entity
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 
     public int getWood() {
