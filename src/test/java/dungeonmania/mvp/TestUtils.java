@@ -201,12 +201,12 @@ public class TestUtils {
     public static DungeonResponse genericAssassinSequence(DungeonManiaController controller, String configFile) {
         DungeonResponse response = controller.newGame("d_battleTest_basicAssassin", configFile);
         List<EntityResponse> entities = response.getEntities();
-        int mercenaryCount = countEntityOfType(entities, "assassin");
+        int assassinCount = countEntityOfType(entities, "assassin");
         assertEquals(1, countEntityOfType(entities, "player"));
-        assertEquals(1, mercenaryCount);
+        assertEquals(1, assassinCount);
         for (int i = 0; i < 3; i++) {
             response = controller.tick(Direction.RIGHT);
-            // Check if there is a battle - if there is one of the player or merc is dead
+            // Check if there is a battle - if there is one of the player or assassin is dead
             int battlesHeld = response.getBattles().size();
             if (battlesHeld != 0) {
                 break;

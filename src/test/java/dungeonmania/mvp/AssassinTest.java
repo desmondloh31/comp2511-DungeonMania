@@ -74,7 +74,7 @@ public class AssassinTest {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_assassinTest_bribeAmount", "c_assassin_test_bribeAmount");
 
-        String assassinId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+        String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
 
         // pick up first treasure
         res = dmc.tick(Direction.RIGHT);
@@ -111,7 +111,7 @@ public class AssassinTest {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_assassinTest_bribeAmount", "c_assassin_test_bribeAmount");
 
-        String assassinId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+        String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
 
         // pick up first treasure
         res = dmc.tick(Direction.RIGHT);
@@ -134,8 +134,7 @@ public class AssassinTest {
     @DisplayName("Test player battles mercenary and player dies")
     public void testPlayerDiesWhenBattleAssassin() {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = TestUtils.genericMercenarySequence(controller,
-                "c_assassinTest_playerDies");
+        DungeonResponse postBattleResponse = TestUtils.genericAssassinSequence(controller, "c_assassinTest_playerDies");
         List<EntityResponse> entities = postBattleResponse.getEntities();
 
         assertTrue(TestUtils.countEntityOfType(entities, "player") == 0);
@@ -146,7 +145,7 @@ public class AssassinTest {
     @DisplayName("Test player battles mercenary and mercenary dies")
     public void testAssassinDiesWhenBattle() {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = TestUtils.genericMercenarySequence(controller,
+        DungeonResponse postBattleResponse = TestUtils.genericAssassinSequence(controller,
                 "c_assassinTest_assassinDies");
         List<EntityResponse> entities = postBattleResponse.getEntities();
 
@@ -160,7 +159,7 @@ public class AssassinTest {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_assassinTest_noStick", "c_assassinTest_noStick");
 
-        String assassinId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+        String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
 
         // pick up treasure
         res = dmc.tick(Direction.LEFT);
@@ -174,7 +173,7 @@ public class AssassinTest {
         assertEquals(new Position(1, 1), getPlayerPos(res));
         assertEquals(new Position(3, 1), getAssassinPos(res));
         res = dmc.tick(Direction.LEFT);
-        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
         assertEquals(new Position(1, 1), getPlayerPos(res));
         assertEquals(new Position(2, 1), getAssassinPos(res));
 
@@ -207,7 +206,7 @@ public class AssassinTest {
         DungeonResponse res = dmc.newGame("d_assassinTest_enemyMovementFindPlayer",
                 "c_assassinTest_enemyMovementFindPlayer");
 
-        String assassinId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+        String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
 
         // pick up treasure
         res = dmc.tick(Direction.RIGHT);
@@ -276,6 +275,6 @@ public class AssassinTest {
     }
 
     private Position getAssassinPos(DungeonResponse res) {
-        return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+        return TestUtils.getEntities(res, "assassin").get(0).getPosition();
     }
 }
