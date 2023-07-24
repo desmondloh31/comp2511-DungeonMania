@@ -8,27 +8,22 @@
         {
             "type": "wall",
             "x": 3,
-            "y": 1
-        },
-        {
-            "type": "wall",
-            "x": 3,
             "y": 2
         },
         {
-            "type": "wall",
-            "x": 3,
-            "y": 3
+            "type": "invisibility_potion",
+            "x": 2,
+            "y": 2
         },
         {
             "type": "assassin",
-            "x": 4,
+            "x": 100,
             "y": 2
         },
         {
             "type": "exit",
-            "x": 5,
-            "y": 4
+            "x": 8,
+            "y": 8
         }
     ],
     "goal-condition": {

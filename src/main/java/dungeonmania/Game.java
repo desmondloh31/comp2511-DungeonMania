@@ -13,6 +13,7 @@ import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
@@ -205,6 +206,10 @@ public class Game {
 
     public List<Mercenary> getGameMercenaries() {
         return map.getEntities(Mercenary.class);
+    }
+
+    public List<Assassin> getGameAssassins() {
+        return map.getEntities(Assassin.class);
     }
 
     public void setMap(GameMap map) {
