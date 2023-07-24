@@ -1,5 +1,5 @@
 package dungeonmania.entities.logical;
 
-public class LightBulb {
+public class LightBulb extends LogicalEntity {
 
 }
