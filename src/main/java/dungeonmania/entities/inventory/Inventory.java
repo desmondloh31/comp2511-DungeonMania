@@ -18,6 +18,11 @@ import dungeonmania.entities.collectables.Wood;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
+    private static final int SHIELDWOOD = 2;
+    private static final int SHIELDTREASURE = 1;
+    private static final int SHIELDKEYS = 1;
+    private static final int BOWWOOD = 1;
+    private static final int BOWARROW = 3;
 
     public boolean add(InventoryItem item) {
         items.add(item);
@@ -29,17 +34,16 @@ public class Inventory {
     }
 
     public List<String> getBuildables() {
-
         int wood = count(Wood.class);
         int arrows = count(Arrow.class);
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
         List<String> result = new ArrayList<>();
 
-        if (wood >= 1 && arrows >= 3) {
+        if (checkBowReq(wood, arrows)) {
             result.add("bow");
         }
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
+        if (checkShieldReq(wood, treasure, keys)) {
             result.add("shield");
         }
         return result;
@@ -52,20 +56,18 @@ public class Inventory {
         List<Treasure> treasure = getEntities(Treasure.class);
         List<Key> keys = getEntities(Key.class);
 
-        if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
+        if (wood.size() >= getBowWood() && arrows.size() >= getBowArrow() && !forceShield) {
             if (remove) {
                 items.remove(wood.get(0));
-                items.remove(arrows.get(0));
-                items.remove(arrows.get(1));
-                items.remove(arrows.get(2));
+                items.removeAll(arrows.subList(0, 3));
             }
             return factory.buildBow();
 
-        } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
+        } else if (wood.size() >= getShieldWood()
+                && (treasure.size() >= getShieldTeasure() || keys.size() >= getShieldKeys())) {
             if (remove) {
-                items.remove(wood.get(0));
-                items.remove(wood.get(1));
-                if (treasure.size() >= 1) {
+                items.removeAll(wood.subList(0, 2));
+                if (treasure.size() >= getShieldTeasure()) {
                     items.remove(treasure.get(0));
                 } else {
                     items.remove(keys.get(0));
@@ -122,4 +124,39 @@ public class Inventory {
         weapon.use(game);
     }
 
+    public boolean checkBowReq(int wood, int arrows) {
+        if (wood >= getBowWood() && arrows >= getBowArrow()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkShieldReq(int wood, int treasure, int keys) {
+        if (wood >= getShieldWood() && (treasure >= getShieldTeasure() || keys >= getShieldKeys())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public int getBowWood() {
+        return BOWWOOD;
+    }
+
+    public int getBowArrow() {
+        return BOWARROW;
+    }
+
+    public int getShieldWood() {
+        return SHIELDWOOD;
+    }
+
+    public int getShieldTeasure() {
+        return SHIELDTREASURE;
+    }
+
+    public int getShieldKeys() {
+        return SHIELDKEYS;
+    }
 }

@@ -13,6 +13,9 @@ public class Spider extends Enemy {
     private boolean forward;
 
     public static final int DEFAULT_SPAWN_RATE = 0;
+    public static final int SPIDER_END_RANGE = 8;
+    public static final int SPIDER_START_RANGE = 0;
+    public static final int SPIDER_OUT_BOUND = -1;
     public static final double DEFAULT_ATTACK = 5;
     public static final double DEFAULT_HEALTH = 10;
 
@@ -32,13 +35,13 @@ public class Spider extends Enemy {
     private void updateNextPosition() {
         if (forward) {
             nextPositionElement++;
-            if (nextPositionElement == 8) {
-                nextPositionElement = 0;
+            if (nextPositionElement == SPIDER_END_RANGE) {
+                nextPositionElement = SPIDER_START_RANGE;
             }
         } else {
             nextPositionElement--;
-            if (nextPositionElement == -1) {
-                nextPositionElement = 7;
+            if (nextPositionElement == SPIDER_OUT_BOUND) {
+                nextPositionElement = SPIDER_END_RANGE - 1;
             }
         }
     }

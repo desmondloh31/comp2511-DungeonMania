@@ -24,23 +24,11 @@ public class ZombieToast extends Enemy {
     }
 
     private Position movePlayer(Game game) {
-        // Position playerDifference = Position.calculatePositionBetween(game.getMap().getPlayer().getPosition(),
-        //         getPosition());
         Position playerDifference = Position.calculatePositionBetween(game.getPlayerPosition(), getPosition());
         Position moveX = (playerDifference.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
                 : Position.translateBy(getPosition(), Direction.LEFT);
         Position moveY = (playerDifference.getY() >= -0) ? Position.translateBy(getPosition(), Direction.UP)
                 : Position.translateBy(getPosition(), Direction.DOWN);
-
-        // if (playerDifference.getY() == 0 && game.getMap().canMoveTo(this, moveX)) {
-        //     return moveX;
-        // } else if (playerDifference.getX() == 0 && game.getMap().canMoveTo(this, moveY)) {
-        //     return moveY;
-        // } else if (Math.abs(playerDifference.getX()) >= Math.abs(playerDifference.getY())) {
-        //     return game.getMap().canMoveTo(this, moveX) ? moveX : getPosition();
-        // } else {
-        //     return game.getMap().canMoveTo(this, moveY) ? moveY : getPosition();
-        // }
 
         if (playerDifference.getY() == 0 && game.canMapMoveTo(this, moveX)) {
             return moveX;
