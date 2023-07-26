@@ -10,6 +10,7 @@ public final class EntityResponse {
     private final String type;
     private final Position position;
     private final boolean isInteractable;
+    private boolean isLogicalActive;
 
     public EntityResponse(String id, String type, Position position, boolean isInteractable) {
         this.id = id;
@@ -18,8 +19,20 @@ public final class EntityResponse {
         this.isInteractable = isInteractable;
     }
 
+    public EntityResponse(String id, String type, Position position, boolean isInteractable, boolean isLogicalActive) {
+        this.id = id;
+        this.type = type;
+        this.position = position;
+        this.isInteractable = isInteractable;
+        this.isLogicalActive = isLogicalActive;
+    }
+
     public boolean isInteractable() {
         return isInteractable;
+    }
+
+    public boolean isLogicalActive() {
+        return isLogicalActive;
     }
 
     public final String getId() {

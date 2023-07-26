@@ -35,9 +35,17 @@ public class ResponseBuilder {
         return new ItemResponse(entity.getId(), NameConverter.toSnakeCase(entity));
     }
 
+    // public static EntityResponse getEntityResponse(Game game, Entity entity) {
+    //     return new EntityResponse(entity.getId(), NameConverter.toSnakeCase(entity), entity.getPosition(),
+    //             (entity instanceof Interactable) && ((Interactable) entity).isInteractable(game.getPlayer()));
+    // }
+
     public static EntityResponse getEntityResponse(Game game, Entity entity) {
+        List<Entity> allCardinalEntities = entity.getCardinallyAdjacentEntities(game.getMap());
+
         return new EntityResponse(entity.getId(), NameConverter.toSnakeCase(entity), entity.getPosition(),
-                (entity instanceof Interactable) && ((Interactable) entity).isInteractable(game.getPlayer()));
+                (entity instanceof Interactable) && ((Interactable) entity).isInteractable(game.getPlayer()),
+                entity.isActive(entity, allCardinalEntities, game.getMap()));
     }
 
     public static RoundResponse getRoundResponse(BattleRound round) {

@@ -79,6 +79,10 @@ public abstract class Entity {
             }
         }
 
+        System.out.println("Entity of type: ");
+        System.out.println(this);
+        System.out.println("Whats cardinal adjacent: ");
+        System.out.println(cardinalAdjacent);
         return cardinalAdjacent;
     }
 

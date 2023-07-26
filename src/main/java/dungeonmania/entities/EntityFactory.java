@@ -6,6 +6,13 @@ import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.enemies.*;
+import dungeonmania.entities.logical.AndLogic;
+import dungeonmania.entities.logical.CoAndLogic;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.OrLogic;
+import dungeonmania.entities.logical.SwitchDoor;
+import dungeonmania.entities.logical.Wire;
+import dungeonmania.entities.logical.XorLogic;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -148,9 +155,40 @@ public class EntityFactory {
             return new Wood(pos);
         case "arrow":
             return new Arrow(pos);
+        case "light_bulb_AND":
+            return new LightBulb(pos, new AndLogic());
+        case "light_bulb_OR":
+            System.out.println("Making Or LIGHT");
+            return new LightBulb(pos, new OrLogic());
+        case "light_bulb_XOR":
+            return new LightBulb(pos, new XorLogic());
+        case "light_bulb_COAND":
+            return new LightBulb(pos, new CoAndLogic());
+        case "switch_door_AND":
+            return new SwitchDoor(pos, new AndLogic());
+        case "switch_door_OR":
+            return new SwitchDoor(pos, new OrLogic());
+        case "switch_door_XOR":
+            return new SwitchDoor(pos, new XorLogic());
+        case "switch_door_COAND":
+            return new SwitchDoor(pos, new CoAndLogic());
+        case "wire":
+            return new Wire(pos);
         case "bomb":
             int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
             return new Bomb(pos, bombRadius);
+        case "logical_bomb_AND":
+            bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
+            return new Bomb(pos, bombRadius, new AndLogic());
+        case "logical_bomb_OR":
+            bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
+            return new Bomb(pos, bombRadius, new OrLogic());
+        case "logical_bomb_XOR":
+            bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
+            return new Bomb(pos, bombRadius, new XorLogic());
+        case "logical_bomb_COAND":
+            bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
+            return new Bomb(pos, bombRadius, new CoAndLogic());
         case "invisibility_potion":
             int invisibilityPotionDuration = config.optInt("invisibility_potion_duration",
                     InvisibilityPotion.DEFAULT_DURATION);
