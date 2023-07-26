@@ -181,6 +181,24 @@ public class TestUtils {
         return response;
     }
 
+    // adding sequence for Hydra enemy type:
+    public static DungeonResponse genericHydraSequence(DungeonManiaController controller, String configFile) {
+        DungeonResponse response = controller.newGame("d_battleTest_basicHydra", configFile);
+        List<EntityResponse> entities = response.getEntities();
+        assertEquals(1, countEntityOfType(entities, "player"));
+        assertEquals(1, countEntityOfType(entities, "hydra"));
+
+        for (int i = 0; i < 3; i++) {
+            response = controller.tick(Direction.RIGHT);
+            // Check if there is a battle - if there is one of the player or zombie is dead
+            int battlesHeld = response.getBattles().size();
+            if (battlesHeld != 0) {
+                break;
+            }
+        }
+        return response;
+    }
+
     public static DungeonResponse genericMercenarySequence(DungeonManiaController controller, String configFile) {
         DungeonResponse response = controller.newGame("d_battleTest_basicMercenary", configFile);
         List<EntityResponse> entities = response.getEntities();
@@ -198,6 +216,7 @@ public class TestUtils {
         return response;
     }
 
+    // adding sequence for Assassin enemy Type
     public static DungeonResponse genericAssassinSequence(DungeonManiaController controller, String configFile) {
         DungeonResponse response = controller.newGame("d_battleTest_basicAssassin", configFile);
         List<EntityResponse> entities = response.getEntities();

@@ -122,4 +122,21 @@ public class BasicGoalsTest {
         // assert goal met
         assertEquals("", TestUtils.getGoals(res));
     }
+
+    @Test
+    @Tag("14-7")
+    @DisplayName("Testing EnemyGoal")
+    public void enemyGoalTest() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_basicGoalsTest_enemyGoal", "c_basicGoalsTest_enemyGoal");
+
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        // kill enemy
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert goal met
+        assertEquals("", TestUtils.getGoals(res));
+    }
 }

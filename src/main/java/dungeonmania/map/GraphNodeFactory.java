@@ -13,6 +13,7 @@ public class GraphNodeFactory {
         switch (jsonEntity.getString("type")) {
         case "player":
         case "zombie_toast":
+        case "hydra":
         case "zombie_toast_spawner":
         case "mercenary":
         case "assassin":

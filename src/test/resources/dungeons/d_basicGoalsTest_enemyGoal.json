@@ -1,0 +1,32 @@
+{
+    "entities": [
+        {
+            "type": "enemy",
+            "x": 1,
+            "y": 1
+        },
+        {
+            "type": "enemy",
+            "x": 3,
+            "y": 1
+        },
+        {
+            "type": "enemy",
+            "x": 4,
+            "y": 1
+        },
+        {
+            "type": "enemy",
+            "x": 5,
+            "y": 1
+        },
+        {
+            "type": "enemy",
+            "x": 6,
+            "y": 1
+        }
+    ],
+    "goal-condition": {
+        "goal": "enemies"
+    }
+}

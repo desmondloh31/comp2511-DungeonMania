@@ -95,6 +95,13 @@ public class EntityFactory {
         return new ZombieToast(pos, zombieHealth, zombieAttack);
     }
 
+    public Hydra buildHydra(Position pos) {
+        double zombieHealth = config.optDouble("hydra_health", Hydra.DEFAULT_HEALTH);
+        double zombieAttack = config.optDouble("hydra_attack", Hydra.DEFAULT_ATTACK);
+        int headCount = config.optInt("head_count", 20);
+        return new Hydra(pos, zombieHealth, zombieAttack, headCount);
+    }
+
     public ZombieToastSpawner buildZombieToastSpawner(Position pos) {
         int zombieSpawnRate = config.optInt("zombie_spawn_interval", ZombieToastSpawner.DEFAULT_SPAWN_INTERVAL);
         return new ZombieToastSpawner(pos, zombieSpawnRate);
@@ -111,15 +118,15 @@ public class EntityFactory {
                 allyAttack, allyDefence);
     }
 
-    public Mercenary buildAssassin(Position pos) {
-        double mercenaryHealth = config.optDouble("assassin_health", Mercenary.DEFAULT_HEALTH);
-        double mercenaryAttack = config.optDouble("assassin_attack", Mercenary.DEFAULT_ATTACK);
-        double allyAttack = config.optDouble("ally_attack", Mercenary.DEFAULT_HEALTH);
-        double allyDefence = config.optDouble("ally_defence", Mercenary.DEFAULT_ATTACK);
-        int mercenaryBribeAmount = config.optInt("bribe_amount", Mercenary.DEFAULT_BRIBE_AMOUNT);
-        int mercenaryBribeRadius = config.optInt("bribe_radius", Mercenary.DEFAULT_BRIBE_RADIUS);
-        return new Assassin(pos, mercenaryHealth, mercenaryAttack, mercenaryBribeAmount, mercenaryBribeRadius,
-                allyAttack, allyDefence);
+    public Assassin buildAssassin(Position pos) {
+        double assassinHealth = config.optDouble("assassin_health", Assassin.DEFAULT_HEALTH);
+        double assassinAttack = config.optDouble("assassin_attack", Assassin.DEFAULT_ATTACK);
+        double allyAttack = config.optDouble("ally_attack", Assassin.DEFAULT_HEALTH);
+        double allyDefence = config.optDouble("ally_defence", Assassin.DEFAULT_ATTACK);
+        int assassinBribeAmount = config.optInt("bribe_amount", Assassin.DEFAULT_BRIBE_AMOUNT);
+        int assassinBribeRadius = config.optInt("bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
+        return new Assassin(pos, assassinHealth, assassinAttack, assassinBribeAmount, assassinBribeRadius, allyAttack,
+                allyDefence);
     }
 
     public Bow buildBow() {
@@ -143,6 +150,8 @@ public class EntityFactory {
             return buildZombieToast(pos);
         case "zombie_toast_spawner":
             return buildZombieToastSpawner(pos);
+        case "hydra":
+            return buildHydra(pos);
         case "mercenary":
             return buildMercenary(pos);
         case "assassin":

@@ -52,8 +52,7 @@ public class Hydra extends Enemy {
 
     @Override
     public void receiveDamage(double damage) {
-        Random rand = new Random();
-        if (rand.nextDouble() < HEAD_GROWTH_PROBABILITY && headCount < MAX_HEAD_COUNT) {
+        if (random.nextDouble() < HEAD_GROWTH_PROBABILITY && headCount < MAX_HEAD_COUNT) {
             increaseHealth(damage);
             headCount += 2;
         } else {
