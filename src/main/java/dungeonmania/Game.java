@@ -39,6 +39,7 @@ public class Game {
     private ComparableCallback currentAction = null;
 
     private int tickCount = 0;
+    private int killedEnemiesCount = 0;
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
 
@@ -85,6 +86,7 @@ public class Game {
             map.destroyEntity(player);
         }
         if (enemy.getBattleStatistics().getHealth() <= 0) {
+            killedEnemiesCount++;
             map.destroyEntity(enemy);
         }
     }
@@ -103,6 +105,7 @@ public class Game {
         Entity e = map.getEntity(entityId);
         if (e == null || !(e instanceof Interactable))
             throw new IllegalArgumentException("Entity cannot be interacted");
+
         if (!((Interactable) e).isInteractable(player)) {
             throw new InvalidActionException("Entity cannot be interacted");
         }
@@ -158,6 +161,15 @@ public class Game {
         sub = nextTickSub;
         tickCount++;
         return tickCount;
+    }
+
+    public int getKilledEnemiesCount() {
+        return killedEnemiesCount;
+    }
+
+    public boolean hasActiveSpawners() {
+        List<ZombieToastSpawner> spawners = map.getEntities(ZombieToastSpawner.class);
+        return !spawners.isEmpty();
     }
 
     public int getTick() {

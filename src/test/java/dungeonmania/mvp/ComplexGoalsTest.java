@@ -163,4 +163,22 @@ public class ComplexGoalsTest {
         assertTrue(TestUtils.getGoals(res).contains(":exit"));
         assertTrue(TestUtils.getGoals(res).contains(":boulders"));
     }
+
+    @Test
+    @Tag("14-7")
+    @DisplayName("Testing EnemyGoal")
+    public void enemyGoalTest() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_enemyGoal", "c_complexGoalsTest_enemyGoal");
+
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        // kill enemy
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert goal met
+        assertEquals("", TestUtils.getGoals(res));
+    }
 }

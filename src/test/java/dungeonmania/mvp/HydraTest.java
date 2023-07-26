@@ -77,7 +77,7 @@ public class HydraTest {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_hydraTest_respawn", "c_hydraTest_respawn");
 
-        Position spawnerPos = TestUtils.getEntities(res, "zombie_toast_spawner").get(0).getPosition();
+        Position spawnerPos = TestUtils.getEntities(res, "hydra").get(0).getPosition();
         List<Position> cardinallyAdjacentSquares = TestUtils.getCardinallyAdjacentPositions(spawnerPos);
 
         res = dmc.tick(Direction.UP);
@@ -102,33 +102,40 @@ public class HydraTest {
     }
 
     @Test
-    @Tag("10-8")
-    @DisplayName("Testing hydras grow more heads when attacked")
-    public void attackScalingWithHeads() throws InvalidActionException, IllegalArgumentException {
+    @Tag("20-5")
+    @DisplayName("Testing Hydra's health increase when attacked")
+    public void testHydraHealthIncrease() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_hydraTest_scalingWithHeads", "c_hydraTest_scalingWithHeads");
+        DungeonResponse res = dmc.newGame("d_hydraTest_healthIncrease", "c_hydraTest_healthIncrease");
 
-        // Assuming player starts with a weapon and adjacent to the hydra
-        EntityResponse hydra = getHydras(res).get(0);
-        EntityResponse player = getPlayerPos(res);
+        int roundsToDefeatHydraBefore = 0;
 
-        int hits = 0;
-        while (getHydras(res).size() > 0) { // While the hydra is still alive
-            // Player interacts with the hydra, presumably attacking it
-            res = dmc.interact(hydra.getId());
-            hits++;
-            res = dmc.tick(Direction.NONE); // Update game state
+        while (getHydras(res).size() > 0) { // Assuming the player can attack the Hydra by moving to the right.
+            res = dmc.tick(Direction.RIGHT);
+            roundsToDefeatHydraBefore++;
         }
 
-        // Assuming each head needs one hit and the hydra starts with one head, and grows one additional head every time it's hit
-        assertEquals(2, hits); // One hit for the initial head, one for the new head
+        // Start a new game.
+        res = dmc.newGame("d_hydraTest_healthIncrease", "c_hydraTest_healthIncrease");
+
+        // Attack the Hydra once.
+        res = dmc.tick(Direction.RIGHT);
+
+        int roundsToDefeatHydraAfter = 1;
+
+        while (getHydras(res).size() > 0) {
+            res = dmc.tick(Direction.RIGHT);
+            roundsToDefeatHydraAfter++;
+        }
+
+        assertTrue(roundsToDefeatHydraAfter > roundsToDefeatHydraBefore);
     }
 
-    private EntityResponse getPlayerPos(DungeonResponse res) {
-        return TestUtils.getEntities(res, "player").get(0);
+    private Position getPlayerPos(DungeonResponse res) {
+        return TestUtils.getEntities(res, "player").get(0).getPosition();
     }
 
     private List<EntityResponse> getHydras(DungeonResponse res) {
-        return TestUtils.getEntities(res, "zombie_toast");
+        return TestUtils.getEntities(res, "hydra");
     }
 }
