@@ -26,9 +26,10 @@
             "y": 1
         },
         {
-            "type": "light_bulb_OR",
+            "type": "light_bulb_off",
             "x": 6,
-            "y": 1
+            "y": 1,
+            "logic": "or"
         },
         {
             "type": "exit",

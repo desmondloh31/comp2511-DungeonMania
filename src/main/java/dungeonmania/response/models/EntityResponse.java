@@ -6,58 +6,46 @@ import dungeonmania.util.Position;
  * DO NOT CHANGE THIS FILE
  */
 public final class EntityResponse {
-    private final String id;
-    private final String type;
-    private final Position position;
-    private final boolean isInteractable;
-    private boolean isLogicalActive;
+        private final String id;
+        private final String type;
+        private final Position position;
+        private final boolean isInteractable;
 
-    public EntityResponse(String id, String type, Position position, boolean isInteractable) {
-        this.id = id;
-        this.type = type;
-        this.position = position;
-        this.isInteractable = isInteractable;
-    }
+        public EntityResponse(String id, String type, Position position, boolean isInteractable) {
+                this.id = id;
+                this.type = type;
+                this.position = position;
+                this.isInteractable = isInteractable;
+        }
 
-    public EntityResponse(String id, String type, Position position, boolean isInteractable, boolean isLogicalActive) {
-        this.id = id;
-        this.type = type;
-        this.position = position;
-        this.isInteractable = isInteractable;
-        this.isLogicalActive = isLogicalActive;
-    }
+        public boolean isInteractable() {
+                return isInteractable;
+        }
 
-    public boolean isInteractable() {
-        return isInteractable;
-    }
+        public final String getId() {
+                return id;
+        }
 
-    public boolean isLogicalActive() {
-        return isLogicalActive;
-    }
+        public final String getType() {
+                return type;
+        }
 
-    public final String getId() {
-        return id;
-    }
+        public final Position getPosition() {
+                return position;
+        }
 
-    public final String getType() {
-        return type;
-    }
+        @Override
+        public boolean equals(Object obj) {
+                if (obj == this)
+                        return true;
+                if (obj == null)
+                        return false;
+                if (obj.getClass() != getClass())
+                        return false;
 
-    public final Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (obj == null)
-            return false;
-        if (obj.getClass() != getClass())
-            return false;
-
-        EntityResponse entityResponse = (EntityResponse) obj;
-        return entityResponse.id.equals(id) && entityResponse.type.equals(type)
-                && entityResponse.position.equals(position) && entityResponse.isInteractable == isInteractable;
-    }
+                EntityResponse entityResponse = (EntityResponse) obj;
+                return entityResponse.id.equals(id) && entityResponse.type.equals(type)
+                                && entityResponse.position.equals(position)
+                                && entityResponse.isInteractable == isInteractable;
+        }
 }
