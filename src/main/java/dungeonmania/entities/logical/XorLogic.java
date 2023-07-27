@@ -3,15 +3,22 @@ package dungeonmania.entities.logical;
 import java.util.List;
 
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.Switch;
 import dungeonmania.map.GameMap;
 
 public class XorLogic implements LogicalStrategy {
     @Override
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         int numActive = 0;
+        List<Entity> allCardinalEntities = targetEntity.getCardinallyAdjacentEntities(map);
+
+        System.out.println("Whats cardinal adjacent in isActive: ");
+        System.out.println(allCardinalEntities);
+
         for (Entity entity : allCardinalEntities) {
-            List<Entity> curEntityCardinal = entity.getCardinallyAdjacentEntities(map);
-            if (entity.isConductor() && entity.isActive(targetEntity, curEntityCardinal, map)) {
+            if ((entity instanceof Switch) && entity.getActive()) {
+                numActive++;
+            } else if (entity.isConductor() && entity.isActive(entity, map)) {
                 numActive++;
             }
         }

@@ -32,7 +32,7 @@ public class Wall extends Entity implements Overlappable, MoveAwayable, Destruct
         return;
     }
 
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         return false;
     }
 

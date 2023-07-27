@@ -45,7 +45,7 @@ public abstract class Buildable extends Entity
         return;
     }
 
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         return false;
     }
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.entities.collectables.Bomb;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -53,6 +55,9 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Boulder) {
             activated = true;
+            setActive(activated);
+            setTickActivated(map.getCurrentTick(), map);
+            isActive(this, map);
             bombs.stream().forEach(b -> b.notify(map));
         }
     }
@@ -61,6 +66,8 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
     public void onMovedAway(GameMap map, Entity entity) {
         if (entity instanceof Boulder) {
             activated = false;
+            setActive(activated);
+            isActive(this, map);
         }
     }
 
@@ -74,9 +81,36 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
     }
 
     // switch is a defined conductor
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    @Override
+    public boolean isActive(Entity targetEntity, GameMap map) {
         if (activated == true) {
-            setTickActivated(map.getCurrentTick(), map);
+            System.out.println("Switch has turned on");
+            List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+            List<String> visited = new ArrayList<>();
+            visited.add(getId());
+
+            // run set active for non Lightbulb and SwitchDoor entities
+            for (Entity entity : allAdjacent) {
+                if (!visited.contains(entity.getId())) {
+                    if (!(entity instanceof LightBulb) && !(entity instanceof SwitchDoor)) {
+                        visited.add(entity.getId());
+                        entity.configureActive(visited, map);
+                        entity.setActive(entity.getActive());
+                    }
+                }
+            }
+
+            // run set active for all entities
+            visited = new ArrayList<>();
+            visited.add(getId());
+            for (Entity entity : allAdjacent) {
+                if (!visited.contains(entity.getId())) {
+                    visited.add(entity.getId());
+
+                    entity.configureActive(visited, map);
+                    entity.setActive(entity.getActive());
+                }
+            }
         }
         return activated;
     }

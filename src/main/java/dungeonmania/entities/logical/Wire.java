@@ -32,13 +32,19 @@ public class Wire extends Entity {
     }
 
     @Override
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         List<Entity> adjacentEntities = this.getCardinallyAdjacentEntities(map);
+
+        System.out.println(adjacentEntities);
+
         for (Entity entity : adjacentEntities) {
-            if (entity.isConductor()) {
+            if (entity.getActive() && entity.isConductor()) {
+                System.out.println("Active Wire");
+                setActive(true);
                 return true;
             }
         }
+        System.out.println("Not Active Wire");
         return false;
     }
 }

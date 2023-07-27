@@ -1,5 +1,6 @@
 package dungeonmania.entities;
 
+import dungeonmania.Game;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -21,6 +22,7 @@ public abstract class Entity {
     private String entityId;
 
     private int tickActivated;
+    private boolean isActive;
 
     public Entity(Position position) {
         this.position = position;
@@ -30,13 +32,14 @@ public abstract class Entity {
         this.facing = null;
 
         this.tickActivated = -1;
+        this.isActive = false;
     }
 
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return false;
     }
 
-    public abstract boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map);
+    public abstract boolean isActive(Entity targetEntity, GameMap map);
 
     public abstract boolean isConductor();
 
@@ -79,9 +82,9 @@ public abstract class Entity {
             }
         }
 
-        System.out.println("Entity of type: ");
+        System.out.println("Getting adjacents for Entity of type: ");
         System.out.println(this);
-        System.out.println("Whats cardinal adjacent: ");
+        System.out.println("Adjacent: ");
         System.out.println(cardinalAdjacent);
         return cardinalAdjacent;
     }
@@ -128,5 +131,26 @@ public abstract class Entity {
 
     public Direction getFacing() {
         return this.facing;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+
+    public void configureActive(List<String> visited, GameMap map) {
+        boolean active = isActive(this, map);
+        visited.add(getId());
+        setActive(active);
+
+        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
+                entity.configureActive(visited, map);
+            }
+        }
     }
 }

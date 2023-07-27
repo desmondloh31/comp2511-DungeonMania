@@ -86,8 +86,7 @@ public class Bomb extends Collectable {
     }
 
     public boolean canLogicalExplode(GameMap map) {
-        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
-        boolean checkActive = isActive(this, allAdjacent, map);
+        boolean checkActive = logic.isActive(this, map);
         return checkActive;
     }
 

@@ -31,18 +31,8 @@ public class GraphNodeFactory {
         case "door":
         case "key":
         case "wire":
-        case "light_bulb_AND":
-        case "light_bulb_OR":
-        case "light_bulb_XOR":
-        case "light_bulb_COAND":
-        case "switch_door_AND":
-        case "switch_door_OR":
-        case "switch_door_XOR":
-        case "switch_door_COAND":
-        case "logical_bomb_AND":
-        case "logical_bomb_OR":
-        case "logical_bomb_XOR":
-        case "logical_bomb_COAND":
+        case "light_bulb_off":
+        case "switch_door":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
             return null;

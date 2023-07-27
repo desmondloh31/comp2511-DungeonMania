@@ -204,7 +204,7 @@ public class Player extends Entity implements Battleable, Overlappable, MoveAway
         return;
     }
 
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         return false;
     }
 

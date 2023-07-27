@@ -49,7 +49,7 @@ public class ZombieToastSpawner extends Entity implements Interactable, Overlapp
         return;
     }
 
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         return false;
     }
 

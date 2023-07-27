@@ -26,219 +26,219 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 
 public class EntityFactory {
-        private JSONObject config;
-        private Random ranGen = new Random();
+    private JSONObject config;
+    private Random ranGen = new Random();
 
-        public EntityFactory(JSONObject config) {
-                this.config = config;
+    public EntityFactory(JSONObject config) {
+        this.config = config;
+    }
+
+    public Entity createEntity(JSONObject jsonEntity) {
+        return constructEntity(jsonEntity, config);
+    }
+
+    public void spawnSpider(Game game) {
+        GameMap map = game.getMap();
+        int tick = game.getTick();
+        int rate = config.optInt("spider_spawn_interval", 0);
+        if (rate == 0 || (tick + 1) % rate != 0)
+            return;
+        int radius = 20;
+        Position player = map.getPlayer().getPosition();
+
+        Spider dummySpider = buildSpider(new Position(0, 0)); // for checking possible positions
+
+        List<Position> availablePos = new ArrayList<>();
+        for (int i = player.getX() - radius; i < player.getX() + radius; i++) {
+            for (int j = player.getY() - radius; j < player.getY() + radius; j++) {
+                if (Position.calculatePositionBetween(player, new Position(i, j)).magnitude() > radius)
+                    continue;
+                Position np = new Position(i, j);
+                if (!map.canMoveTo(dummySpider, np) || np.equals(player))
+                    continue;
+                if (map.getEntities(np).stream().anyMatch(e -> e instanceof Enemy))
+                    continue;
+                availablePos.add(np);
+            }
         }
+        Position initPosition = availablePos.get(ranGen.nextInt(availablePos.size()));
+        Spider spider = buildSpider(initPosition);
+        map.addEntity(spider);
+        game.register(() -> spider.move(game), Game.AI_MOVEMENT, spider.getId());
+    }
 
-        public Entity createEntity(JSONObject jsonEntity) {
-                return constructEntity(jsonEntity, config);
+    public void spawnZombie(Game game, ZombieToastSpawner spawner) {
+        GameMap map = game.getMap();
+        int tick = game.getTick();
+        Random randGen = new Random();
+        int spawnInterval = config.optInt("zombie_spawn_interval", ZombieToastSpawner.DEFAULT_SPAWN_INTERVAL);
+        if (spawnInterval == 0 || (tick + 1) % spawnInterval != 0)
+            return;
+        List<Position> pos = spawner.getPosition().getCardinallyAdjacentPositions();
+        pos = pos.stream().filter(p -> !map.getEntities(p).stream().anyMatch(e -> (e instanceof Wall)))
+                .collect(Collectors.toList());
+        if (pos.size() == 0)
+            return;
+        ZombieToast zt = buildZombieToast(pos.get(randGen.nextInt(pos.size())));
+        map.addEntity(zt);
+        game.register(() -> zt.move(game), Game.AI_MOVEMENT, zt.getId());
+    }
+
+    public Spider buildSpider(Position pos) {
+        double spiderHealth = config.optDouble("spider_health", Spider.DEFAULT_HEALTH);
+        double spiderAttack = config.optDouble("spider_attack", Spider.DEFAULT_ATTACK);
+        return new Spider(pos, spiderHealth, spiderAttack);
+    }
+
+    public Player buildPlayer(Position pos) {
+        double playerHealth = config.optDouble("player_health", Player.DEFAULT_HEALTH);
+        double playerAttack = config.optDouble("player_attack", Player.DEFAULT_ATTACK);
+        return new Player(pos, playerHealth, playerAttack);
+    }
+
+    public ZombieToast buildZombieToast(Position pos) {
+        double zombieHealth = config.optDouble("zombie_health", ZombieToast.DEFAULT_HEALTH);
+        double zombieAttack = config.optDouble("zombie_attack", ZombieToast.DEFAULT_ATTACK);
+        return new ZombieToast(pos, zombieHealth, zombieAttack);
+    }
+
+    public ZombieToastSpawner buildZombieToastSpawner(Position pos) {
+        int zombieSpawnRate = config.optInt("zombie_spawn_interval", ZombieToastSpawner.DEFAULT_SPAWN_INTERVAL);
+        return new ZombieToastSpawner(pos, zombieSpawnRate);
+    }
+
+    public Mercenary buildMercenary(Position pos) {
+        double mercenaryHealth = config.optDouble("mercenary_health", Mercenary.DEFAULT_HEALTH);
+        double mercenaryAttack = config.optDouble("mercenary_attack", Mercenary.DEFAULT_ATTACK);
+        double allyAttack = config.optDouble("ally_attack", Mercenary.DEFAULT_HEALTH);
+        double allyDefence = config.optDouble("ally_defence", Mercenary.DEFAULT_ATTACK);
+        int mercenaryBribeAmount = config.optInt("bribe_amount", Mercenary.DEFAULT_BRIBE_AMOUNT);
+        int mercenaryBribeRadius = config.optInt("bribe_radius", Mercenary.DEFAULT_BRIBE_RADIUS);
+        return new Mercenary(pos, mercenaryHealth, mercenaryAttack, mercenaryBribeAmount, mercenaryBribeRadius,
+                allyAttack, allyDefence);
+    }
+
+    public Bow buildBow() {
+        int bowDurability = config.optInt("bow_durability");
+        return new Bow(bowDurability);
+    }
+
+    public Shield buildShield() {
+        int shieldDurability = config.optInt("shield_durability");
+        double shieldDefence = config.optInt("shield_defence");
+        return new Shield(shieldDurability, shieldDefence);
+    }
+
+    public LightBulb buildLight(Position pos, String logic) {
+        switch (logic) {
+        case "and":
+            return new LightBulb(pos, new AndLogic());
+        case "or":
+            return new LightBulb(pos, new OrLogic());
+        case "xor":
+            return new LightBulb(pos, new XorLogic());
+        case "co_and":
+            return new LightBulb(pos, new CoAndLogic());
+        default:
+            return null;
         }
+    }
 
-        public void spawnSpider(Game game) {
-                GameMap map = game.getMap();
-                int tick = game.getTick();
-                int rate = config.optInt("spider_spawn_interval", 0);
-                if (rate == 0 || (tick + 1) % rate != 0)
-                        return;
-                int radius = 20;
-                Position player = map.getPlayer().getPosition();
-
-                Spider dummySpider = buildSpider(new Position(0, 0)); // for checking possible positions
-
-                List<Position> availablePos = new ArrayList<>();
-                for (int i = player.getX() - radius; i < player.getX() + radius; i++) {
-                        for (int j = player.getY() - radius; j < player.getY() + radius; j++) {
-                                if (Position.calculatePositionBetween(player, new Position(i, j)).magnitude() > radius)
-                                        continue;
-                                Position np = new Position(i, j);
-                                if (!map.canMoveTo(dummySpider, np) || np.equals(player))
-                                        continue;
-                                if (map.getEntities(np).stream().anyMatch(e -> e instanceof Enemy))
-                                        continue;
-                                availablePos.add(np);
-                        }
-                }
-                Position initPosition = availablePos.get(ranGen.nextInt(availablePos.size()));
-                Spider spider = buildSpider(initPosition);
-                map.addEntity(spider);
-                game.register(() -> spider.move(game), Game.AI_MOVEMENT, spider.getId());
+    public SwitchDoor buildSwitchDoor(Position pos, String logic) {
+        switch (logic) {
+        case "and":
+            return new SwitchDoor(pos, new AndLogic());
+        case "or":
+            return new SwitchDoor(pos, new OrLogic());
+        case "xor":
+            return new SwitchDoor(pos, new XorLogic());
+        case "co_and":
+            return new SwitchDoor(pos, new CoAndLogic());
+        default:
+            return null;
         }
+    }
 
-        public void spawnZombie(Game game, ZombieToastSpawner spawner) {
-                GameMap map = game.getMap();
-                int tick = game.getTick();
-                Random randGen = new Random();
-                int spawnInterval = config.optInt("zombie_spawn_interval", ZombieToastSpawner.DEFAULT_SPAWN_INTERVAL);
-                if (spawnInterval == 0 || (tick + 1) % spawnInterval != 0)
-                        return;
-                List<Position> pos = spawner.getPosition().getCardinallyAdjacentPositions();
-                pos = pos.stream().filter(p -> !map.getEntities(p).stream().anyMatch(e -> (e instanceof Wall)))
-                                .collect(Collectors.toList());
-                if (pos.size() == 0)
-                        return;
-                ZombieToast zt = buildZombieToast(pos.get(randGen.nextInt(pos.size())));
-                map.addEntity(zt);
-                game.register(() -> zt.move(game), Game.AI_MOVEMENT, zt.getId());
+    public Bomb buildBomb(Position pos, int bomb_radius, String logic) {
+        switch (logic) {
+        case "and":
+            return new Bomb(pos, bomb_radius, new AndLogic());
+        case "or":
+            return new Bomb(pos, bomb_radius, new OrLogic());
+        case "xor":
+            return new Bomb(pos, bomb_radius, new XorLogic());
+        case "co_and":
+            return new Bomb(pos, bomb_radius, new CoAndLogic());
+        default:
+            return null;
         }
+    }
 
-        public Spider buildSpider(Position pos) {
-                double spiderHealth = config.optDouble("spider_health", Spider.DEFAULT_HEALTH);
-                double spiderAttack = config.optDouble("spider_attack", Spider.DEFAULT_ATTACK);
-                return new Spider(pos, spiderHealth, spiderAttack);
+    private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
+        Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
+
+        switch (jsonEntity.getString("type")) {
+        case "player":
+            return buildPlayer(pos);
+        case "zombie_toast":
+            return buildZombieToast(pos);
+        case "zombie_toast_spawner":
+            return buildZombieToastSpawner(pos);
+        case "mercenary":
+            return buildMercenary(pos);
+        case "wall":
+            return new Wall(pos);
+        case "boulder":
+            return new Boulder(pos);
+        case "switch":
+            return new Switch(pos);
+        case "exit":
+            return new Exit(pos);
+        case "treasure":
+            return new Treasure(pos);
+        case "wood":
+            return new Wood(pos);
+        case "arrow":
+            return new Arrow(pos);
+        case "light_bulb_off":
+            String logic = jsonEntity.getString("logic");
+            return buildLight(pos, logic);
+        case "switch_door":
+            logic = jsonEntity.getString("logic");
+            return buildSwitchDoor(pos, logic);
+        case "wire":
+            return new Wire(pos);
+        case "bomb":
+            int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
+            try {
+                logic = jsonEntity.getString("logic");
+                return buildBomb(pos, bombRadius, logic);
+            } catch (Exception e) {
+                ;
+            }
+            return new Bomb(pos, bombRadius);
+        case "invisibility_potion":
+            int invisibilityPotionDuration = config.optInt("invisibility_potion_duration",
+                    InvisibilityPotion.DEFAULT_DURATION);
+            return new InvisibilityPotion(pos, invisibilityPotionDuration);
+        case "invincibility_potion":
+            int invincibilityPotionDuration = config.optInt("invincibility_potion_duration",
+                    InvincibilityPotion.DEFAULT_DURATION);
+            return new InvincibilityPotion(pos, invincibilityPotionDuration);
+        case "portal":
+            return new Portal(pos, ColorCodedType.valueOf(jsonEntity.getString("colour")));
+        case "sword":
+            double swordAttack = config.optDouble("sword_attack", Sword.DEFAULT_ATTACK);
+            int swordDurability = config.optInt("sword_durability", Sword.DEFAULT_DURABILITY);
+            return new Sword(pos, swordAttack, swordDurability);
+        case "spider":
+            return buildSpider(pos);
+        case "door":
+            return new Door(pos, jsonEntity.getInt("key"));
+        case "key":
+            return new Key(pos, jsonEntity.getInt("key"));
+        default:
+            return null;
         }
-
-        public Player buildPlayer(Position pos) {
-                double playerHealth = config.optDouble("player_health", Player.DEFAULT_HEALTH);
-                double playerAttack = config.optDouble("player_attack", Player.DEFAULT_ATTACK);
-                return new Player(pos, playerHealth, playerAttack);
-        }
-
-        public ZombieToast buildZombieToast(Position pos) {
-                double zombieHealth = config.optDouble("zombie_health", ZombieToast.DEFAULT_HEALTH);
-                double zombieAttack = config.optDouble("zombie_attack", ZombieToast.DEFAULT_ATTACK);
-                return new ZombieToast(pos, zombieHealth, zombieAttack);
-        }
-
-        public ZombieToastSpawner buildZombieToastSpawner(Position pos) {
-                int zombieSpawnRate = config.optInt("zombie_spawn_interval", ZombieToastSpawner.DEFAULT_SPAWN_INTERVAL);
-                return new ZombieToastSpawner(pos, zombieSpawnRate);
-        }
-
-        public Mercenary buildMercenary(Position pos) {
-                double mercenaryHealth = config.optDouble("mercenary_health", Mercenary.DEFAULT_HEALTH);
-                double mercenaryAttack = config.optDouble("mercenary_attack", Mercenary.DEFAULT_ATTACK);
-                double allyAttack = config.optDouble("ally_attack", Mercenary.DEFAULT_HEALTH);
-                double allyDefence = config.optDouble("ally_defence", Mercenary.DEFAULT_ATTACK);
-                int mercenaryBribeAmount = config.optInt("bribe_amount", Mercenary.DEFAULT_BRIBE_AMOUNT);
-                int mercenaryBribeRadius = config.optInt("bribe_radius", Mercenary.DEFAULT_BRIBE_RADIUS);
-                return new Mercenary(pos, mercenaryHealth, mercenaryAttack, mercenaryBribeAmount, mercenaryBribeRadius,
-                                allyAttack, allyDefence);
-        }
-
-        public Bow buildBow() {
-                int bowDurability = config.optInt("bow_durability");
-                return new Bow(bowDurability);
-        }
-
-        public Shield buildShield() {
-                int shieldDurability = config.optInt("shield_durability");
-                double shieldDefence = config.optInt("shield_defence");
-                return new Shield(shieldDurability, shieldDefence);
-        }
-
-        public LightBulb buildLight(Position pos, String logic) {
-                switch (logic) {
-                case "and":
-                        return new LightBulb(pos, new AndLogic());
-                case "or":
-                        return new LightBulb(pos, new OrLogic());
-                case "xor":
-                        return new LightBulb(pos, new XorLogic());
-                case "co_and":
-                        return new LightBulb(pos, new CoAndLogic());
-                default:
-                        return null;
-                }
-        }
-
-        public SwitchDoor buildSwitchDoor(Position pos, String logic) {
-                switch (logic) {
-                case "and":
-                        return new SwitchDoor(pos, new AndLogic());
-                case "or":
-                        return new SwitchDoor(pos, new OrLogic());
-                case "xor":
-                        return new SwitchDoor(pos, new XorLogic());
-                case "co_and":
-                        return new SwitchDoor(pos, new CoAndLogic());
-                default:
-                        return null;
-                }
-        }
-
-        public Bomb buildBomb(Position pos, int bomb_radius, String logic) {
-                switch (logic) {
-                case "and":
-                        return new Bomb(pos, bomb_radius, new AndLogic());
-                case "or":
-                        return new Bomb(pos, bomb_radius, new OrLogic());
-                case "xor":
-                        return new Bomb(pos, bomb_radius, new XorLogic());
-                case "co_and":
-                        return new Bomb(pos, bomb_radius, new CoAndLogic());
-                default:
-                        return null;
-                }
-        }
-
-        private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
-                Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
-
-                switch (jsonEntity.getString("type")) {
-                case "player":
-                        return buildPlayer(pos);
-                case "zombie_toast":
-                        return buildZombieToast(pos);
-                case "zombie_toast_spawner":
-                        return buildZombieToastSpawner(pos);
-                case "mercenary":
-                        return buildMercenary(pos);
-                case "wall":
-                        return new Wall(pos);
-                case "boulder":
-                        return new Boulder(pos);
-                case "switch":
-                        return new Switch(pos);
-                case "exit":
-                        return new Exit(pos);
-                case "treasure":
-                        return new Treasure(pos);
-                case "wood":
-                        return new Wood(pos);
-                case "arrow":
-                        return new Arrow(pos);
-                case "light_bulb_off":
-                        String logic = jsonEntity.getString("logic");
-                        return buildLight(pos, logic);
-                case "switch_door":
-                        logic = jsonEntity.getString("logic");
-                        return buildSwitchDoor(pos, logic);
-                case "wire":
-                        return new Wire(pos);
-                case "bomb":
-                        int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
-                        try {
-                                logic = jsonEntity.getString("logic");
-                                return buildBomb(pos, bombRadius, logic);
-                        } catch (Exception e) {
-                                ;
-                        }
-                        return new Bomb(pos, bombRadius);
-                case "invisibility_potion":
-                        int invisibilityPotionDuration = config.optInt("invisibility_potion_duration",
-                                        InvisibilityPotion.DEFAULT_DURATION);
-                        return new InvisibilityPotion(pos, invisibilityPotionDuration);
-                case "invincibility_potion":
-                        int invincibilityPotionDuration = config.optInt("invincibility_potion_duration",
-                                        InvincibilityPotion.DEFAULT_DURATION);
-                        return new InvincibilityPotion(pos, invincibilityPotionDuration);
-                case "portal":
-                        return new Portal(pos, ColorCodedType.valueOf(jsonEntity.getString("colour")));
-                case "sword":
-                        double swordAttack = config.optDouble("sword_attack", Sword.DEFAULT_ATTACK);
-                        int swordDurability = config.optInt("sword_durability", Sword.DEFAULT_DURABILITY);
-                        return new Sword(pos, swordAttack, swordDurability);
-                case "spider":
-                        return buildSpider(pos);
-                case "door":
-                        return new Door(pos, jsonEntity.getInt("key"));
-                case "key":
-                        return new Key(pos, jsonEntity.getInt("key"));
-                default:
-                        return null;
-                }
-        }
+    }
 }

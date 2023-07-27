@@ -5,6 +5,7 @@ import dungeonmania.util.Position;
 import java.util.List;
 
 import dungeonmania.entities.Destructible;
+import dungeonmania.entities.Door;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.MoveAwayable;
 import dungeonmania.entities.Overlappable;
@@ -41,7 +42,7 @@ public class Collectable extends Entity implements InventoryItem, Overlappable, 
         return;
     }
 
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
+    public boolean isActive(Entity targetEntity, GameMap map) {
         return false;
     }
 

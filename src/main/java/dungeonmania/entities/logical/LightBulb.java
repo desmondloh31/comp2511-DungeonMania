@@ -20,16 +20,9 @@ public class LightBulb extends LogicalEntity {
     }
 
     @Override
-    public boolean isActive(Entity targetEntity, List<Entity> allCardinalEntities, GameMap map) {
-        System.out.println("Entity isActive for: ");
-        System.out.println(targetEntity);
-        System.out.println("Whats cardinal adjacent in isActive: ");
-        System.out.println(allCardinalEntities);
-        System.out.println("With logic of type: ");
-        System.out.println(logic);
+    public boolean isActive(Entity targetEntity, GameMap map) {
 
-        System.out.println("IS THIS ON??? ");
-        System.out.println(this.logic.isActive(targetEntity, allCardinalEntities, map));
-        return this.logic.isActive(targetEntity, allCardinalEntities, map);
+        System.out.println("Light isActive?");
+        return this.logic.isActive(targetEntity, map);
     }
 }
