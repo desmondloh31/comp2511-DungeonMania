@@ -6,27 +6,27 @@
             "y": 1
         },
         {
-            "type": "mercenary",
+            "type": "zombie_toast_spawner",
             "x": 3,
             "y": 1
         },
         {
-            "type": "mercenary",
+            "type": "zombie_toast_spawner",
             "x": 4,
             "y": 1
         },
         {
-            "type": "mercenary",
+            "type": "zombie_toast_spawner",
             "x": 5,
             "y": 1
         },
         {
-            "type": "mercenary",
+            "type": "zombie_toast_spawner",
             "x": 6,
             "y": 1
         }
     ],
     "goal-condition": {
-        "goal": "enemies"
+        "goal": "spawners"
     }
 }
