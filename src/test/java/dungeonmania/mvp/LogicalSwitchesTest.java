@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
@@ -384,6 +385,36 @@ public class LogicalSwitchesTest {
         // assert that the switch door and light bulb is off
         assertEquals("switch_door_off", checkDoorClosed(initDungonRes, 0).getType());
         assertEquals("light_bulb_off", checkOffLight(initDungonRes, 0).getType());
+    }
+
+    @Test
+    @Tag("16-20")
+    @DisplayName("Test placing a logical or bomb cardinally adjacent to an active switch, "
+            + "removing surrounding non-player entities")
+    public void placeLogicalCardinallyActive() throws InvalidActionException {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_bombTest_placeLogicalCardinallyActive",
+                "c_bombTest_placeCardinallyActive");
+
+        // Activate Switch
+        res = dmc.tick(Direction.RIGHT);
+
+        // Pick up Bomb
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(1, TestUtils.getInventory(res, "bomb").size());
+
+        // Place Cardinally Adjacent
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(TestUtils.getInventory(res, "bomb").get(0).getId());
+
+        // Check Bomb exploded
+        assertEquals(0, TestUtils.getEntities(res, "bomb").size());
+        assertEquals(0, TestUtils.getEntities(res, "boulder").size());
+        assertEquals(0, TestUtils.getEntities(res, "switch").size());
+        assertEquals(0, TestUtils.getEntities(res, "wall").size());
+        assertEquals(0, TestUtils.getEntities(res, "treasure").size());
+        assertEquals(1, TestUtils.getEntities(res, "player").size());
     }
 
     private EntityResponse checkActiveLight(DungeonResponse res, int ind) {

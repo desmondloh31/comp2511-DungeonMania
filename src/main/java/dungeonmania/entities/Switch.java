@@ -28,8 +28,9 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
     public void subscribe(Bomb bomb, GameMap map) {
         if (bomb.getBombStrategy() == null) {
             bombs.add(bomb);
+        } else {
+            logicalBombs.add(bomb);
         }
-        logicalBombs.add(bomb);
 
         // check if the explosion condition for regular and logical bomb is met
         if (activated) {
