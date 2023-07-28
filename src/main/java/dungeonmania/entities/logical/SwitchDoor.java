@@ -7,9 +7,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.MoveAwayable;
 import dungeonmania.entities.Overlappable;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.enemies.Spider;
-import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 

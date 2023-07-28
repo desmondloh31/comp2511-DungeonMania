@@ -40,9 +40,11 @@ public class CoAndLogic implements LogicalStrategy {
             }
         }
 
+        numActive = numActive + 1;
+        System.out.println("Whats the NumACTIVE COAND" + numActive);
         // activate the entity, set activation time to current tick of game
         if (numActive >= 2) {
-            targetEntity.setTickActivated(map.getCurrentTick(), map);
+            targetEntity.setTickActivated(map);
             return true;
         }
         return false;

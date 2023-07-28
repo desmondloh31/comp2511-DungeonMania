@@ -30,7 +30,7 @@ public class AndLogic implements LogicalStrategy {
         System.out.println(numActive);
         // activate the entity, set activation time to current tick of game
         if (numActive >= 2) {
-            targetEntity.setTickActivated(map.getCurrentTick(), map);
+            targetEntity.setTickActivated(map);
             return true;
         }
         return false;

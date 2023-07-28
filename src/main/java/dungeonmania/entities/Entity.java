@@ -1,6 +1,8 @@
 package dungeonmania.entities;
 
 import dungeonmania.Game;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -82,10 +84,6 @@ public abstract class Entity {
             }
         }
 
-        System.out.println("Getting adjacents for Entity of type: ");
-        System.out.println(this);
-        System.out.println("Adjacent: ");
-        System.out.println(cardinalAdjacent);
         return cardinalAdjacent;
     }
 
@@ -121,7 +119,7 @@ public abstract class Entity {
         this.facing = facing;
     }
 
-    public void setTickActivated(int tick, GameMap map) {
+    public void setTickActivated(GameMap map) {
         this.tickActivated = map.getCurrentTick();
     }
 
@@ -145,11 +143,28 @@ public abstract class Entity {
         boolean active = isActive(this, map);
         visited.add(getId());
         setActive(active);
+        setTickActivated(map);
 
         List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
         for (Entity entity : allAdjacent) {
             if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
                 entity.configureActive(visited, map);
+            }
+        }
+    }
+
+    public void deActivate(List<String> visited, GameMap map) {
+        visited.add(getId());
+        setActive(false);
+
+        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
+                if (entity instanceof SwitchDoor || entity instanceof LightBulb) {
+                    entity.deActivate(visited, map);
+                    break;
+                }
+                entity.deActivate(visited, map);
             }
         }
     }

@@ -29,9 +29,9 @@ public class NameConverter {
             return nameBasic + on;
         }
         if (entity instanceof SwitchDoor) {
-            String on = ((LightBulb) entity).getActive() ? "_on" : "_off";
+            String on = ((SwitchDoor) entity).getActive() ? "_on" : "_off";
 
-            System.out.println("Whats the basic name " + nameBasic + on);
+            System.out.println("Whats the basic Switch door name " + nameBasic + on);
             System.out.println("Entity is currently ");
             System.out.println(entity.getActive());
             return nameBasic + on;

@@ -56,7 +56,7 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
         if (entity instanceof Boulder) {
             activated = true;
             setActive(activated);
-            setTickActivated(map.getCurrentTick(), map);
+            setTickActivated(map);
             isActive(this, map);
             bombs.stream().forEach(b -> b.notify(map));
         }
@@ -67,7 +67,7 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
         if (entity instanceof Boulder) {
             activated = false;
             setActive(activated);
-            isActive(this, map);
+            deActivateAll(this, map);
         }
     }
 
@@ -110,6 +110,36 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
                     entity.configureActive(visited, map);
                     entity.setActive(entity.getActive());
                 }
+            }
+        }
+        return activated;
+    }
+
+    public boolean deActivateAll(Entity targetEntity, GameMap map) {
+        System.out.println("Switch has turned off");
+        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+        List<String> visited = new ArrayList<>();
+        visited.add(getId());
+
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId())) {
+                if (!(entity instanceof LightBulb) && !(entity instanceof SwitchDoor)) {
+                    visited.add(entity.getId());
+                    entity.deActivate(visited, map);
+                    entity.setActive(entity.getActive());
+                }
+            }
+        }
+
+        // run set active for all entities
+        visited = new ArrayList<>();
+        visited.add(getId());
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId())) {
+                visited.add(entity.getId());
+
+                entity.deActivate(visited, map);
+                entity.setActive(entity.getActive());
             }
         }
         return activated;

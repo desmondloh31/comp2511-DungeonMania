@@ -24,7 +24,7 @@ public class OrLogic implements LogicalStrategy {
         }
 
         if (numActive >= 1) {
-            targetEntity.setTickActivated(map.getCurrentTick(), map);
+            targetEntity.setTickActivated(map);
             return true;
         }
         return false;
