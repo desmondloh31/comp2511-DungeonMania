@@ -62,8 +62,9 @@ public class Hydra extends Enemy {
 
     @Override
     public BattleStatistics getBattleStatistics() {
-        return new BattleStatistics(getBattleStatistics().getHealth(), getBattleStatistics().getAttack() * headCount,
-                getBattleStatistics().getDefence(), 1, 1);
+        BattleStatistics superStats = super.getBattleStatistics();
+        return new BattleStatistics(superStats.getHealth(), superStats.getAttack() * headCount, superStats.getDefence(),
+                1, 1);
     }
 
     public void reduceHeadCount() {

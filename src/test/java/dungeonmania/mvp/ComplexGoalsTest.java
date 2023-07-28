@@ -166,19 +166,121 @@ public class ComplexGoalsTest {
 
     @Test
     @Tag("14-7")
-    @DisplayName("Testing EnemyGoal")
-    public void enemyGoalTest() {
-        DungeonManiaController dmc;
-        dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_complexGoalsTest_enemyGoal", "c_complexGoalsTest_enemyGoal");
+    @DisplayName("Testing complex EnemyGoal with multiple enemies")
+    public void multipleEnemiesGoalTest() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_multipleEnemies", "c_complexGoalsTest_multipleEnemies");
+
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        res = dmc.tick(Direction.RIGHT);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+
+        res = dmc.tick(Direction.UP);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+
+        res = dmc.tick(Direction.LEFT);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @Tag("14-8")
+    @DisplayName("Testing complex SpawnerGoal with multiple spawners")
+    public void multipleSpawnerGoalTest() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_multipleSpawners", "c_complexGoalsTest_multipleSpawners");
+
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        res = dmc.tick(Direction.RIGHT);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        res = dmc.tick(Direction.UP);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        res = dmc.tick(Direction.LEFT);
+        assertNotNull(res);
+        assertNotNull(TestUtils.getGoals(res));
+        assertEquals(":spawners", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @Tag("14-10")
+    @DisplayName("Testing a complex goal with both enemies and spawners")
+    public void enemiesAndSpawners() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_enemiesAndSpawners",
+                "c_complexGoalsTest_enemiesAndSpawners");
 
         assertTrue(TestUtils.getGoals(res).contains(":enemies"));
         assertTrue(TestUtils.getGoals(res).contains(":spawners"));
 
-        // kill enemy
         res = dmc.tick(Direction.RIGHT);
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        res = dmc.tick(Direction.UP);
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":spawners"));
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals("(:enemies AND :spawners)", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @Tag("14-11")
+    @DisplayName("Testing that the exit goal must be achieved last and EXIT and TREASURE")
+    public void exitAndEnemiesAndSpawnerOrder() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_exitAndBouldersAndTreasureOrder",
+                "c_complexGoalsTest_exitAndBouldersAndTreasureOrder");
+
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertFalse(TestUtils.getGoals(res).contains(":spawners"));
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+
+        // move player onto treasure
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert treasure goal met
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+        assertFalse(TestUtils.getGoals(res).contains(":spawners"));
+
+        // move player onto exit
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert treasure goal remains achieved
+        // don't check state of exit goal in string
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+        assertFalse(TestUtils.getGoals(res).contains(":spawners"));
+
+        // move boulder onto switch, but goal string is not empty
+        res = dmc.tick(Direction.RIGHT);
+        assertFalse(TestUtils.getGoals(res).contains(":enemies"));
+        assertFalse(TestUtils.getGoals(res).contains(":spawners"));
+        assertNotEquals("", TestUtils.getGoals(res));
+
+        // move back onto exit
+        res = dmc.tick(Direction.LEFT);
 
         // assert goal met
         assertEquals("", TestUtils.getGoals(res));
     }
+
 }
