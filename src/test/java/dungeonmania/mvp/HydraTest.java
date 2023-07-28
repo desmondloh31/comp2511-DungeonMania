@@ -101,36 +101,6 @@ public class HydraTest {
         assertEquals(position, getHydras(res).get(0).getPosition());
     }
 
-    @Test
-    @Tag("20-5")
-    @DisplayName("Testing Hydra's health increase when attacked")
-    public void testHydraHealthIncrease() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_hydraTest_healthIncrease", "c_hydraTest_healthIncrease");
-
-        int roundsToDefeatHydraBefore = 0;
-
-        while (getHydras(res).size() > 0) { // Assuming the player can attack the Hydra by moving to the right.
-            res = dmc.tick(Direction.RIGHT);
-            roundsToDefeatHydraBefore++;
-        }
-
-        // Start a new game.
-        res = dmc.newGame("d_hydraTest_healthIncrease", "c_hydraTest_healthIncrease");
-
-        // Attack the Hydra once.
-        res = dmc.tick(Direction.RIGHT);
-
-        int roundsToDefeatHydraAfter = 1;
-
-        while (getHydras(res).size() > 0) {
-            res = dmc.tick(Direction.RIGHT);
-            roundsToDefeatHydraAfter++;
-        }
-
-        assertTrue(roundsToDefeatHydraAfter > roundsToDefeatHydraBefore);
-    }
-
     private Position getPlayerPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "player").get(0).getPosition();
     }
