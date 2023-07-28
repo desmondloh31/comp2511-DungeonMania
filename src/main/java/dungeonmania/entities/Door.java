@@ -2,8 +2,6 @@ package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
 
-import java.util.List;
-
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;

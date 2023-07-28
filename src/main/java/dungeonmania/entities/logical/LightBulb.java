@@ -1,7 +1,5 @@
 package dungeonmania.entities.logical;
 
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -22,7 +20,6 @@ public class LightBulb extends LogicalEntity {
     @Override
     public boolean isActive(Entity targetEntity, GameMap map) {
 
-        System.out.println("Light isActive?");
         return this.logic.isActive(targetEntity, map);
     }
 }

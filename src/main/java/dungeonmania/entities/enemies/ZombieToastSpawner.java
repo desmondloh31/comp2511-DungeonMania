@@ -1,7 +1,5 @@
 package dungeonmania.entities.enemies;
 
-import java.util.List;
-
 import dungeonmania.Game;
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;

@@ -1,7 +1,5 @@
 package dungeonmania.entities;
 
-import java.util.List;
-
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;

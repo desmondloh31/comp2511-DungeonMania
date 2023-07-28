@@ -1,7 +1,5 @@
 package dungeonmania.entities;
 
-import java.util.List;
-
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 

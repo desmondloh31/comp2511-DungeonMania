@@ -2,10 +2,7 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.util.Position;
 
-import java.util.List;
-
 import dungeonmania.entities.Destructible;
-import dungeonmania.entities.Door;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.MoveAwayable;
 import dungeonmania.entities.Overlappable;

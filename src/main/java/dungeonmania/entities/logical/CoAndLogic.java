@@ -14,9 +14,6 @@ public class CoAndLogic implements LogicalStrategy {
         List<Entity> activeEntities = new ArrayList<>();
         List<Entity> allCardinalEntities = targetEntity.getCardinallyAdjacentEntities(map);
 
-        System.out.println("Whats cardinal adjacent in isActive: ");
-        System.out.println(allCardinalEntities);
-
         for (Entity entity : allCardinalEntities) {
             if ((entity instanceof Switch) && entity.getActive()) {
                 activeEntities.add(entity);
@@ -41,7 +38,6 @@ public class CoAndLogic implements LogicalStrategy {
         }
 
         numActive = numActive + 1;
-        System.out.println("Whats the NumACTIVE COAND" + numActive);
         // activate the entity, set activation time to current tick of game
         if (numActive >= 2) {
             targetEntity.setTickActivated(map);

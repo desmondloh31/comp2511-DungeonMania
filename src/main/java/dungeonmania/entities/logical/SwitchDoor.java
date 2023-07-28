@@ -1,7 +1,5 @@
 package dungeonmania.entities.logical;
 
-import java.util.List;
-
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.MoveAwayable;
@@ -47,7 +45,6 @@ public class SwitchDoor extends LogicalEntity implements Overlappable, MoveAwaya
     @Override
     public boolean isActive(Entity targetEntity, GameMap map) {
 
-        System.out.println("SwitchDoor isActive?");
         return this.logic.isActive(targetEntity, map);
     }
 

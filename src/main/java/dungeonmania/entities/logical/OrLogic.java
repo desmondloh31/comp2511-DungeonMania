@@ -12,9 +12,6 @@ public class OrLogic implements LogicalStrategy {
         int numActive = 0;
         List<Entity> allCardinalEntities = targetEntity.getCardinallyAdjacentEntities(map);
 
-        System.out.println("Whats cardinal adjacent in isActive: ");
-        System.out.println(allCardinalEntities);
-
         for (Entity entity : allCardinalEntities) {
             if ((entity instanceof Switch) && entity.getActive()) {
                 numActive++;

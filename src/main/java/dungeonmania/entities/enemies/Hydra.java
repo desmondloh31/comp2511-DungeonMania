@@ -4,7 +4,6 @@ import java.util.Random;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
-import dungeonmania.entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 

@@ -234,10 +234,8 @@ public class EntityFactory {
             int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
             try {
                 logic = jsonEntity.getString("logic");
-                System.out.println("Logical Bomb");
                 return buildBomb(pos, bombRadius, logic);
             } catch (Exception e) {
-                System.out.println("Regular Bomb");
                 return new Bomb(pos, bombRadius);
             }
 

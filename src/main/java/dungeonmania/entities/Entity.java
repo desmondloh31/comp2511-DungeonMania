@@ -1,6 +1,5 @@
 package dungeonmania.entities;
 
-import dungeonmania.Game;
 import dungeonmania.entities.logical.LightBulb;
 import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.map.GameMap;

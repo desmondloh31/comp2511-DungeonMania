@@ -93,7 +93,8 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
             // run set active for non Lightbulb and SwitchDoor entities
             for (Entity entity : allAdjacent) {
                 if (!visited.contains(entity.getId())) {
-                    if (!(entity instanceof LightBulb) && !(entity instanceof SwitchDoor)) {
+                    if (!(entity instanceof LightBulb) && !(entity instanceof SwitchDoor)
+                            && !(entity instanceof Switch)) {
                         visited.add(entity.getId());
                         entity.configureActive(visited, map);
                         entity.setActive(entity.getActive());
@@ -105,7 +106,7 @@ public class Switch extends Entity implements Overlappable, MoveAwayable, Destru
             visited = new ArrayList<>();
             visited.add(getId());
             for (Entity entity : allAdjacent) {
-                if (!visited.contains(entity.getId())) {
+                if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
                     visited.add(entity.getId());
 
                     entity.configureActive(visited, map);

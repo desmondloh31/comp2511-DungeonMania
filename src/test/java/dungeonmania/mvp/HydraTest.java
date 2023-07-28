@@ -1,8 +1,6 @@
 package dungeonmania.mvp;
 
 import dungeonmania.DungeonManiaController;
-import dungeonmania.Game;
-import dungeonmania.entities.enemies.Hydra;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -101,9 +99,9 @@ public class HydraTest {
         assertEquals(position, getHydras(res).get(0).getPosition());
     }
 
-    private Position getPlayerPos(DungeonResponse res) {
-        return TestUtils.getEntities(res, "player").get(0).getPosition();
-    }
+    // private Position getPlayerPos(DungeonResponse res) {
+    //     return TestUtils.getEntities(res, "player").get(0).getPosition();
+    // }
 
     private List<EntityResponse> getHydras(DungeonResponse res) {
         return TestUtils.getEntities(res, "hydra");

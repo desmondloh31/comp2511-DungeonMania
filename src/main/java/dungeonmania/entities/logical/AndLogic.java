@@ -12,9 +12,6 @@ public class AndLogic implements LogicalStrategy {
         int numActive = 0;
         List<Entity> allCardinalEntities = targetEntity.getCardinallyAdjacentEntities(map);
 
-        System.out.println("Whats cardinal adjacent in AND LOGIC isActive: ");
-        System.out.println(allCardinalEntities);
-
         for (Entity entity : allCardinalEntities) {
             if ((entity instanceof Switch) && entity.getActive()) {
                 numActive++;
@@ -26,8 +23,6 @@ public class AndLogic implements LogicalStrategy {
             }
         }
 
-        System.out.println("WHATS NUMACTIVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        System.out.println(numActive);
         // activate the entity, set activation time to current tick of game
         if (numActive >= 2) {
             targetEntity.setTickActivated(map);

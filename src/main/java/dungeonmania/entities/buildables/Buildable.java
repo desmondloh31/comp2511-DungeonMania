@@ -1,7 +1,5 @@
 package dungeonmania.entities.buildables;
 
-import java.util.List;
-
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
