@@ -11,7 +11,7 @@ import java.util.Random;
 public class Assassin extends Mercenary {
     public static final double ASSASSIN_ATTACK = 15.0;
     public static final double ASSASSIN_HEALTH = 20.0;
-    public static final double BRIBE_FAILURE_RATE = 0.2;
+    public static double BRIBE_FAILURE_RATE = 0.2;
     public static final int DEFAULT_BRIBE_AMOUNT = 1;
     public static final int DEFAULT_BRIBE_RADIUS = 1;
     public static final double ALLY_ATTACK = 7.0;
