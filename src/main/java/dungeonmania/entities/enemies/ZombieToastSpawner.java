@@ -46,4 +46,12 @@ public class ZombieToastSpawner extends Entity implements Interactable, Overlapp
     public void onMovedAway(GameMap map, Entity entity) {
         return;
     }
+
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
 }

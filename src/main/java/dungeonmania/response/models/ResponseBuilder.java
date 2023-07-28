@@ -15,32 +15,35 @@ import dungeonmania.util.NameConverter;
  * DO NOT CHANGE THIS FILE
  */
 public class ResponseBuilder {
-    public static DungeonResponse getDungeonResponse(Game game) {
-        List<EntityResponse> entityResponse = new ArrayList<>();
-        game.getMap().getEntities().forEach(e -> {
-            entityResponse.add(ResponseBuilder.getEntityResponse(game, e));
-        });
-        return new DungeonResponse(game.getId(), game.getName(), entityResponse,
-                (game.getPlayer() != null) ? getInventoryResponse(game.getPlayer().getInventory()) : null,
-                game.getBattleFacade().getBattleResponses(),
-                (game.getPlayer() != null) ? game.getPlayer().getBuildables() : null,
-                (game.getGoals().achieved(game)) ? "" : game.getGoals().toString(game));
-    }
+        public static DungeonResponse getDungeonResponse(Game game) {
+                List<EntityResponse> entityResponse = new ArrayList<>();
+                game.getMap().getEntities().forEach(e -> {
+                        entityResponse.add(ResponseBuilder.getEntityResponse(game, e));
+                });
+                return new DungeonResponse(game.getId(), game.getName(), entityResponse,
+                                (game.getPlayer() != null) ? getInventoryResponse(game.getPlayer().getInventory())
+                                                : null,
+                                game.getBattleFacade().getBattleResponses(),
+                                (game.getPlayer() != null) ? game.getPlayer().getBuildables() : null,
+                                (game.getGoals().achieved(game)) ? "" : game.getGoals().toString(game));
+        }
 
-    private static List<ItemResponse> getInventoryResponse(Inventory inventory) {
-        return inventory.getEntities().stream().map(ResponseBuilder::getItemResponse).collect(Collectors.toList());
-    }
+        private static List<ItemResponse> getInventoryResponse(Inventory inventory) {
+                return inventory.getEntities().stream().map(ResponseBuilder::getItemResponse)
+                                .collect(Collectors.toList());
+        }
 
-    public static ItemResponse getItemResponse(Entity entity) {
-        return new ItemResponse(entity.getId(), NameConverter.toSnakeCase(entity));
-    }
+        public static ItemResponse getItemResponse(Entity entity) {
+                return new ItemResponse(entity.getId(), NameConverter.toSnakeCase(entity));
+        }
 
-    public static EntityResponse getEntityResponse(Game game, Entity entity) {
-        return new EntityResponse(entity.getId(), NameConverter.toSnakeCase(entity), entity.getPosition(),
-                (entity instanceof Interactable) && ((Interactable) entity).isInteractable(game.getPlayer()));
-    }
+        public static EntityResponse getEntityResponse(Game game, Entity entity) {
+                return new EntityResponse(entity.getId(), NameConverter.toSnakeCase(entity), entity.getPosition(),
+                                (entity instanceof Interactable)
+                                                && ((Interactable) entity).isInteractable(game.getPlayer()));
+        }
 
-    public static RoundResponse getRoundResponse(BattleRound round) {
-        return new RoundResponse(round.getDeltaSelfHealth(), round.getDeltaTargetHealth());
-    }
+        public static RoundResponse getRoundResponse(BattleRound round) {
+                return new RoundResponse(round.getDeltaSelfHealth(), round.getDeltaTargetHealth());
+        }
 }

@@ -1,9 +1,12 @@
 package dungeonmania.entities;
 
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.SwitchDoor;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,17 +22,27 @@ public abstract class Entity {
     private Direction facing;
     private String entityId;
 
+    private int tickActivated;
+    private boolean isActive;
+
     public Entity(Position position) {
         this.position = position;
         this.previousPosition = position;
         this.previousDistinctPosition = null;
         this.entityId = UUID.randomUUID().toString();
         this.facing = null;
+
+        this.tickActivated = -1;
+        this.isActive = false;
     }
 
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return false;
     }
+
+    public abstract boolean isActive(Entity targetEntity, GameMap map);
+
+    public abstract boolean isConductor();
 
     // use setPosition
     @Deprecated(forRemoval = true)
@@ -55,6 +68,22 @@ public abstract class Entity {
 
     public Position getPosition() {
         return position;
+    }
+
+    // return list of all cardinally adjacent entities
+    public List<Entity> getCardinallyAdjacentEntities(GameMap map) {
+        List<Position> allAdjacentPositions = getEntityCardinallyAdjacentPositions();
+        List<Entity> allEntities = map.getEntities();
+
+        List<Entity> cardinalAdjacent = new ArrayList<>();
+
+        for (Entity e : allEntities) {
+            if (allAdjacentPositions.contains(e.getPosition())) {
+                cardinalAdjacent.add(e);
+            }
+        }
+
+        return cardinalAdjacent;
     }
 
     public List<Position> getEntityCardinallyAdjacentPositions() {
@@ -89,7 +118,53 @@ public abstract class Entity {
         this.facing = facing;
     }
 
+    public void setTickActivated(GameMap map) {
+        this.tickActivated = map.getCurrentTick();
+    }
+
+    public int getTickActivated() {
+        return tickActivated;
+    }
+
     public Direction getFacing() {
         return this.facing;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+
+    public void configureActive(List<String> visited, GameMap map) {
+        boolean active = isActive(this, map);
+        visited.add(getId());
+        setActive(active);
+        setTickActivated(map);
+
+        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
+                entity.configureActive(visited, map);
+            }
+        }
+    }
+
+    public void deActivate(List<String> visited, GameMap map) {
+        visited.add(getId());
+        setActive(false);
+
+        List<Entity> allAdjacent = getCardinallyAdjacentEntities(map);
+        for (Entity entity : allAdjacent) {
+            if (!visited.contains(entity.getId()) && !(entity instanceof Switch)) {
+                if (entity instanceof SwitchDoor || entity instanceof LightBulb) {
+                    entity.deActivate(visited, map);
+                    break;
+                }
+                entity.deActivate(visited, map);
+            }
+        }
     }
 }

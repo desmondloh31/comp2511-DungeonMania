@@ -428,13 +428,13 @@ public class BattleTest {
         String config = "c_battleTest_shieldDurability";
         DungeonResponse res = controller.newGame("d_battleTest_shieldDurabilityTest", config);
 
-        int enemyAttack = Integer.parseInt(TestUtils.getValueFromConfigFile("zombie_attack", config));
+        // int enemyAttack = Integer.parseInt(TestUtils.getValueFromConfigFile("zombie_attack", config));
 
         // Set shield durability in config
         // Assumption: Durability is the number of battles a shield lasts
         // Assumption: Shield effect calculation to reduce damage makes enemyAttack =
         // enemyAttack - shield effect
-        int shieldEffect = Integer.parseInt(TestUtils.getValueFromConfigFile("shield_defence", config));
+        // int shieldEffect = Integer.parseInt(TestUtils.getValueFromConfigFile("shield_defence", config));
 
         // Set the shield durability in the config
         List<EntityResponse> entities = res.getEntities();

@@ -100,5 +100,13 @@ public abstract class Enemy extends Entity implements Battleable, Overlappable, 
         return game.getGameEffectivePotion() instanceof InvincibilityPotion;
     }
 
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
+
     public abstract void move(Game game);
 }

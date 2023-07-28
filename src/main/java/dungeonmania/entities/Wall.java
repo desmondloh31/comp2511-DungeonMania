@@ -1,6 +1,7 @@
 package dungeonmania.entities;
 
 import dungeonmania.map.GameMap;
+
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.util.Position;
 
@@ -27,5 +28,13 @@ public class Wall extends Entity implements Overlappable, MoveAwayable, Destruct
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 }

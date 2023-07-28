@@ -44,4 +44,12 @@ public class Boulder extends Entity implements Overlappable, MoveAwayable, Destr
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
 }

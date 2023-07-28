@@ -1,6 +1,7 @@
 package dungeonmania.entities.collectables;
 
 import dungeonmania.util.Position;
+
 import dungeonmania.entities.Destructible;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.MoveAwayable;
@@ -36,5 +37,13 @@ public class Collectable extends Entity implements InventoryItem, Overlappable, 
     @Override
     public void onDestroy(GameMap gameMap) {
         return;
+    }
+
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
     }
 }

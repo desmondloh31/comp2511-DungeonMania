@@ -6,6 +6,13 @@ import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.enemies.*;
+import dungeonmania.entities.logical.AndLogic;
+import dungeonmania.entities.logical.CoAndLogic;
+import dungeonmania.entities.logical.LightBulb;
+import dungeonmania.entities.logical.OrLogic;
+import dungeonmania.entities.logical.SwitchDoor;
+import dungeonmania.entities.logical.Wire;
+import dungeonmania.entities.logical.XorLogic;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -140,6 +147,51 @@ public class EntityFactory {
         return new Shield(shieldDurability, shieldDefence);
     }
 
+    public LightBulb buildLight(Position pos, String logic) {
+        switch (logic) {
+        case "and":
+            return new LightBulb(pos, new AndLogic());
+        case "or":
+            return new LightBulb(pos, new OrLogic());
+        case "xor":
+            return new LightBulb(pos, new XorLogic());
+        case "co_and":
+            return new LightBulb(pos, new CoAndLogic());
+        default:
+            return null;
+        }
+    }
+
+    public SwitchDoor buildSwitchDoor(Position pos, String logic) {
+        switch (logic) {
+        case "and":
+            return new SwitchDoor(pos, new AndLogic());
+        case "or":
+            return new SwitchDoor(pos, new OrLogic());
+        case "xor":
+            return new SwitchDoor(pos, new XorLogic());
+        case "co_and":
+            return new SwitchDoor(pos, new CoAndLogic());
+        default:
+            return null;
+        }
+    }
+
+    public Bomb buildBomb(Position pos, int bomb_radius, String logic) {
+        switch (logic) {
+        case "and":
+            return new Bomb(pos, bomb_radius, new AndLogic());
+        case "or":
+            return new Bomb(pos, bomb_radius, new OrLogic());
+        case "xor":
+            return new Bomb(pos, bomb_radius, new XorLogic());
+        case "co_and":
+            return new Bomb(pos, bomb_radius, new CoAndLogic());
+        default:
+            return null;
+        }
+    }
+
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
 
@@ -170,9 +222,23 @@ public class EntityFactory {
             return new Wood(pos);
         case "arrow":
             return new Arrow(pos);
+        case "light_bulb_off":
+            String logic = jsonEntity.getString("logic");
+            return buildLight(pos, logic);
+        case "switch_door":
+            logic = jsonEntity.getString("logic");
+            return buildSwitchDoor(pos, logic);
+        case "wire":
+            return new Wire(pos);
         case "bomb":
             int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
-            return new Bomb(pos, bombRadius);
+            try {
+                logic = jsonEntity.getString("logic");
+                return buildBomb(pos, bombRadius, logic);
+            } catch (Exception e) {
+                return new Bomb(pos, bombRadius);
+            }
+
         case "invisibility_potion":
             int invisibilityPotionDuration = config.optInt("invisibility_potion_duration",
                     InvisibilityPotion.DEFAULT_DURATION);

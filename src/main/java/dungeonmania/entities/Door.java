@@ -63,4 +63,12 @@ public class Door extends Entity implements Overlappable, MoveAwayable, Destruct
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    public boolean isActive(Entity targetEntity, GameMap map) {
+        return false;
+    }
+
+    public boolean isConductor() {
+        return false;
+    }
 }

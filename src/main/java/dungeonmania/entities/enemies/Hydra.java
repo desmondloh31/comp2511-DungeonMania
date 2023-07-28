@@ -76,4 +76,5 @@ public class Hydra extends Enemy {
     public int getHeadCount() {
         return this.headCount;
     }
+
 }

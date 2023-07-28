@@ -1,7 +1,6 @@
 package dungeonmania.mvp;
 
 import dungeonmania.DungeonManiaController;
-import dungeonmania.entities.enemies.Assassin;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -154,7 +153,7 @@ public class AssassinTest {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_assassinTest_noStick", "c_assassinTest_noStick");
 
-        String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
+        // String assassinId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();
 
         // pick up treasure
         res = dmc.tick(Direction.LEFT);

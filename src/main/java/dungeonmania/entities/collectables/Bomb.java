@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
+import dungeonmania.entities.logical.LogicalStrategy;
 import dungeonmania.map.GameMap;
 
 public class Bomb extends Collectable {
@@ -19,6 +20,7 @@ public class Bomb extends Collectable {
     public static final int DEFAULT_RADIUS = 1;
     private State state;
     private int radius;
+    private LogicalStrategy logic;
 
     private List<Switch> subs = new ArrayList<>();
 
@@ -26,6 +28,14 @@ public class Bomb extends Collectable {
         super(position);
         state = State.SPAWNED;
         this.radius = radius;
+        this.logic = null;
+    }
+
+    public Bomb(Position position, int radius, LogicalStrategy logic) {
+        super(position);
+        state = State.SPAWNED;
+        this.radius = radius;
+        this.logic = logic;
     }
 
     public void subscribe(Switch s) {
@@ -53,7 +63,6 @@ public class Bomb extends Collectable {
         translate(Position.calculatePositionBetween(getPosition(), p));
         map.addEntity(this);
         this.state = State.PLACED;
-        // List<Position> adjPosList = getPosition().getCardinallyAdjacentPositions();
         List<Position> adjPosList = getEntityCardinallyAdjacentPositions();
         adjPosList.stream().forEach(node -> {
             List<Entity> entities = map.getEntities(node).stream().filter(e -> (e instanceof Switch))
@@ -74,6 +83,15 @@ public class Bomb extends Collectable {
                     map.destroyEntity(e);
             }
         }
+    }
+
+    public boolean canLogicalExplode(GameMap map) {
+        boolean checkActive = logic.isActive(this, map);
+        return checkActive;
+    }
+
+    public LogicalStrategy getBombStrategy() {
+        return logic;
     }
 
     public State getState() {
